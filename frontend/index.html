@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js"></script>
+    <title>仓库潜力分析工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 8px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        .loading {
+            color: #666;
+            display: none;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>仓库潜力分析工具</h1>
+    <div class="container">
+        <div class="input-group">
+            <label for="repo">仓库地址 (格式: owner/repo):</label><br>
+            <input type="text" id="repo" placeholder="例如: AdguardTeam/AdguardFilters">
+            <button id="analyzeBtn">分析</button>
+        </div>
+        <div class="loading">正在分析，请稍候...</div>
+        <div class="error" id="errorMsg"></div>
+        <div class="result" id="resultContainer">
+            <h3>分析结果: <span id="repoName"></span></h3>
+            <p><strong>潜力值:</strong> <span id="potential" style="font-size: 1.2em; color: #2c3e50;"></span></p>
+            
+                <!-- 新增图表容器 -->
+                <div style="width: 100%; height: 400px; margin: 20px 0;" id="activityChart"></div>
+                
+
+            <h4>平均值数据:</h4>
+            <pre id="averagedData"></pre>
+            <h4>详细数据:</h4>
+            <pre id="detailedData"></pre>
+        </div>
+    </div>
+
+    <script src="visualization.js"></script>
+    <script>
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const repoInput = document.getElementById('repo');
+        const loading = document.querySelector('.loading');
+        const errorMsg = document.getElementById('errorMsg');
+        const resultContainer = document.getElementById('resultContainer');
+        const repoNameEl = document.getElementById('repoName');
+        const potentialEl = document.getElementById('potential');
+        const averagedDataEl = document.getElementById('averagedData');
+        const detailedDataEl = document.getElementById('detailedData');
+
+        analyzeBtn.addEventListener('click', async () => {
+            const repo = repoInput.value.trim();
+            if (!repo || !repo.includes('/')) {
+                errorMsg.textContent = '请输入正确格式的仓库地址（格式: owner/repo）';
+                return;
+            }
+
+            // 重置状态
+            errorMsg.textContent = '';
+            resultContainer.style.display = 'none';
+            loading.style.display = 'block';
+            analyzeBtn.disabled = true;
+
+            try {
+                // 发送请求到后端
+                const response = await fetch('http://localhost:5000/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ repo: repo })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || '分析失败，请重试');
+                }
+
+                // 显示结果
+                repoNameEl.textContent = data.repo;
+                potentialEl.textContent = data.potential;
+                averagedDataEl.textContent = JSON.stringify(data.averaged_data, null, 2);
+                detailedDataEl.textContent = JSON.stringify(data.detailed_data, null, 2);
+                resultContainer.style.display = 'block';
+
+            if (data.detailed_data && data.detailed_data.activity) {
+                const chartContainer = document.getElementById('activityChart');
+                // 时间轴数据（根据实际业务场景修改，这里以季度为例）
+                const timeLabels = ['Q1', 'Q2', 'Q3', 'Q4'];  // 与activity数组长度对应
+                // 传入活动数据和时间轴
+                initActivityBarChart(chartContainer, data.detailed_data.activity, timeLabels);
+            }
+            } catch (err) {
+                errorMsg.textContent = err.message;
+            } finally {
+                loading.style.display = 'none';
+                analyzeBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

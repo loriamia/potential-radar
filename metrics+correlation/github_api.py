@@ -90,7 +90,7 @@ def get_github_repos(n: int) -> list[str]:
 
             for repo in items:
                 repos.append(repo["full_name"])
-                print(f"✅ 获取仓库：{repo['full_name']}")
+                # print(f"✅ 获取仓库：{repo['full_name']}")
                 query_repos += 1
                 if len(repos) >= n or query_repos >= per_query_limit:
                     break
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # 目标GitHub搜索URL
     github_search_url = "https://github.com/search?q=stars%3A%3C100+pushed%3A%3E2025-12-01+&type=repositories"
     # 需要获取的前n个仓库（可自行修改n值，如10、20等）
-    target_count = 200
+    target_count = 400
 
     print(f"开始爬取GitHub搜索结果中前 {target_count} 个仓库...")
     repos = get_github_repos(target_count)

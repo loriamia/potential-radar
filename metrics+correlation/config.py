@@ -25,7 +25,7 @@ SEARCH_QUEARYS = [
                     "stars:50..100 pushed:>2025-12-01",
                     "stars:100..200 pushed:>2025-12-01",
                     "stars:200..500 pushed:>2025-12-01",
-                    "stars:>500 pushed:>2025-12-01",
+                    "stars:500...1000 pushed:>2025-12-01",
                 ]
 
 OPENDIGGER_API_URL = "https://oss.x-lab.info/open_digger/github/metrics/activity"

@@ -1,10 +1,12 @@
 # main.py 项目主入口
 import json
 import csv
+import os
 from github_api import get_github_trending_repos,get_github_repos
 from opendigger_analysis import batch_analysis_repos
 from config import RESULT_SAVE_PATH, GITHUB_URLS
 from correlation_analysis import analyze_correlations
+from PCA import pca_with_metric_weight
 
 def save_result_to_json(result: list, save_path: str):
     """将结果保存到本地json文件"""
@@ -27,12 +29,12 @@ def output_to_csv(result: dict, correlations: dict, filename: str):
     print(f"\n✅ 结果和相关性已保存到CSV文件: {filename}")
 
 if __name__ == "__main__":
-    metrics = ["inactive_contributors","contributors",  "issue_resolution_duration", "change_request_resolution_duration", "activity", "issue_response_time", 
+    metrics = ["inactive_contributors","contributors", "participants", "bus_factor","issue_resolution_duration", "change_request_resolution_duration", "activity", "issue_response_time", 
                "change_request_response_time", "openrank"]  # 示例指标数组
 
-    print("=" * 50)
-    print("开始爬取GitHub仓库并分析...")
-    print("=" * 50)
+    # print("=" * 50)
+    # print("开始爬取GitHub仓库并分析...")
+    # print("=" * 50)
 
     # 1. 爬取仓库地址
     # repo_list = get_github_trending_repos()
@@ -45,21 +47,30 @@ if __name__ == "__main__":
     repo_list = json.load(open("repos_snapshot.json"))
 
     # 2. 批量分析仓库，得到平均activity值的数组【核心结果】
-    result = batch_analysis_repos(repo_list, metrics)
+    result_file = "result.json"
+    if os.path.exists(result_file):
+        print(f"从文件 {result_file} 加载result，避免重复计算...")
+        with open(result_file, "r", encoding="utf-8") as f:
+            result = json.load(f)
+    else:
+        print("计算result...")
+        result = batch_analysis_repos(repo_list, metrics)
+        save_result_to_json(result, result_file)
 
-    # 修改 inactive_contributors 为 inactive_contributors / contributors
-    # if "inactive_contributors" in result and "contributors" in result:
-    #     inactive = result["inactive_contributors"]
-    #     contrib = result["contributors"]
-    #     if len(inactive) == len(contrib):
-    #         result["inactive_contributors"] = [inactive[i] / contrib[i] if contrib[i] != 0 else 0 for i in range(len(inactive))]
+    # contributors:contributors/participants
+    if "contributors" in result and "participants" in result:
+        inactive = result["contributors"]
+        contrib = result["participants"]
+        metrics.insert(len(metrics) - 1, "contributors_per_participant")
+        if len(inactive) == len(contrib):
+            result["contributors_per_participant"] = [inactive[i] / contrib[i] if contrib[i] != 0 else 0 for i in range(len(inactive))]
 
     # 3. 打印最终结果数组
     print("\n" + "=" * 50)
     3
-    print("📈 最终结果数组 (仓库+近3个月平均activity值):")
-    print("=" * 50)
-    print(result)
+    # print("📈 最终结果数组 (仓库+近3个月平均activity值):")
+    # print("=" * 50)
+    # print(result)
 
 
 
@@ -67,8 +78,23 @@ if __name__ == "__main__":
     correlations = analyze_correlations(metrics, result)
     print("相关性分析结果:", correlations)
     
+    # 去掉result的最后一行（最后一个样本）和metrics的最后一个指标
+    result_trimmed = {k: v[:-1] for k, v in result.items()}
+    metrics_trimmed = metrics[:-1]
+    
+    # 再去掉"contributors"和"participants"
+    result_trimmed = {k: v for k, v in result_trimmed.items() if k not in ["contributors", "participants", "openrank"]}
+    metrics_trimmed = [m for m in metrics_trimmed if m not in ["contributors", "participants", "openrank"]]
+    
+    (pca_loadings_df, component_var_ratio, raw_metric_weights,
+     pca_composite_scores, standardized_df) = pca_with_metric_weight(result_trimmed, metrics_trimmed)
+    print("3. 原始指标的综合权重（主成分权重还原后，权重和为1）：")
+    for metric, weight in sorted(raw_metric_weights.items(), key=lambda x: x[1], reverse=True):
+        print(f"   {metric:<35}: {weight:.6f}")
+
+    print("=" * 80)
     # 4. 输出为CSV表格
-    output_to_csv(result, correlations, "result.csv")
+    # output_to_csv(result, correlations, "result.csv")
     # 4. 可选：保存结果到本地
     #save_result_to_json(activity_array, RESULT_SAVE_PATH)
 
