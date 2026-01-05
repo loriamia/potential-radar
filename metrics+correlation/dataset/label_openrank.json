@@ -1,0 +1,1171 @@
+[
+  {
+    "repo": "maennchen/crontab",
+    "t": "2025-06",
+    "openrank_t": 1.04,
+    "openrank_t_plus_3": 0.69,
+    "y_growth": -0.336538
+  },
+  {
+    "repo": "peeringdb/peeringdb-py",
+    "t": "2025-06",
+    "openrank_t": 1.07,
+    "openrank_t_plus_3": 0.5,
+    "y_growth": -0.53271
+  },
+  {
+    "repo": "VirtusLab/scala-yaml",
+    "t": "2025-06",
+    "openrank_t": 0.62,
+    "openrank_t_plus_3": 0.27,
+    "y_growth": -0.564516
+  },
+  {
+    "repo": "dfinity/portal",
+    "t": "2025-06",
+    "openrank_t": 28.12,
+    "openrank_t_plus_3": 17.59,
+    "y_growth": -0.374467
+  },
+  {
+    "repo": "qitoqito/psyduck",
+    "t": "2025-06",
+    "openrank_t": 5.39,
+    "openrank_t_plus_3": 0.99,
+    "y_growth": -0.816327
+  },
+  {
+    "repo": "5Jbgr/carolineModCtrl",
+    "t": "2025-06",
+    "openrank_t": 1.01,
+    "openrank_t_plus_3": 0.92,
+    "y_growth": -0.089109
+  },
+  {
+    "repo": "mdn/mdn-http-observatory",
+    "t": "2025-06",
+    "openrank_t": 0.62,
+    "openrank_t_plus_3": 2.45,
+    "y_growth": 2.951613
+  },
+  {
+    "repo": "tibiadata/tibiadata-api-go",
+    "t": "2025-06",
+    "openrank_t": 0.66,
+    "openrank_t_plus_3": 1.9,
+    "y_growth": 1.878788
+  },
+  {
+    "repo": "andrewbenington/OpenHome",
+    "t": "2025-06",
+    "openrank_t": 5.02,
+    "openrank_t_plus_3": 7.36,
+    "y_growth": 0.466135
+  },
+  {
+    "repo": "LedgerHQ/app-bitcoin-new",
+    "t": "2025-06",
+    "openrank_t": 2.76,
+    "openrank_t_plus_3": 0.86,
+    "y_growth": -0.688406
+  },
+  {
+    "repo": "boul2gom/yt-dlp",
+    "t": "2025-06",
+    "openrank_t": 3.03,
+    "openrank_t_plus_3": 0.73,
+    "y_growth": -0.759076
+  },
+  {
+    "repo": "TechxArtisanStudio/Openterface",
+    "t": "2025-06",
+    "openrank_t": 1.11,
+    "openrank_t_plus_3": 1.22,
+    "y_growth": 0.099099
+  },
+  {
+    "repo": "playtron-os/gameos",
+    "t": "2025-06",
+    "openrank_t": 4.32,
+    "openrank_t_plus_3": 5.96,
+    "y_growth": 0.37963
+  },
+  {
+    "repo": "NREL/openstudio-standards",
+    "t": "2025-06",
+    "openrank_t": 12.13,
+    "openrank_t_plus_3": 8.03,
+    "y_growth": -0.338005
+  },
+  {
+    "repo": "huggingface/optimum-executorch",
+    "t": "2025-06",
+    "openrank_t": 4.53,
+    "openrank_t_plus_3": 5.18,
+    "y_growth": 0.143488
+  },
+  {
+    "repo": "TRAIS-Lab/dattri",
+    "t": "2025-06",
+    "openrank_t": 3.19,
+    "openrank_t_plus_3": 3.2,
+    "y_growth": 0.003135
+  },
+  {
+    "repo": "ikoyhn/clean-cast",
+    "t": "2025-06",
+    "openrank_t": 5.2,
+    "openrank_t_plus_3": 4.49,
+    "y_growth": -0.136538
+  },
+  {
+    "repo": "Embucket/embucket-labs",
+    "t": "2025-06",
+    "openrank_t": 24.01,
+    "openrank_t_plus_3": 26.45,
+    "y_growth": 0.101624
+  },
+  {
+    "repo": "GIBIS-UNIFESP/wiRedPanda",
+    "t": "2025-06",
+    "openrank_t": 3.99,
+    "openrank_t_plus_3": 3.25,
+    "y_growth": -0.185464
+  },
+  {
+    "repo": "shotgunsoftware/tk-core",
+    "t": "2025-06",
+    "openrank_t": 6.67,
+    "openrank_t_plus_3": 4.52,
+    "y_growth": -0.322339
+  },
+  {
+    "repo": "iden3/contracts",
+    "t": "2025-06",
+    "openrank_t": 7.46,
+    "openrank_t_plus_3": 2.3,
+    "y_growth": -0.691689
+  },
+  {
+    "repo": "cockroachdb/helm-charts",
+    "t": "2025-06",
+    "openrank_t": 8.54,
+    "openrank_t_plus_3": 5.51,
+    "y_growth": -0.354801
+  },
+  {
+    "repo": "freelensapp/freelens-fluxcd-extension",
+    "t": "2025-06",
+    "openrank_t": 2.8,
+    "openrank_t_plus_3": 2.85,
+    "y_growth": 0.017857
+  },
+  {
+    "repo": "ggozad/behaving",
+    "t": "2025-06",
+    "openrank_t": 1.21,
+    "openrank_t_plus_3": 0.25,
+    "y_growth": -0.793388
+  },
+  {
+    "repo": "simonbrowndotje/c4model",
+    "t": "2025-06",
+    "openrank_t": 0.87,
+    "openrank_t_plus_3": 1.55,
+    "y_growth": 0.781609
+  },
+  {
+    "repo": "mtrudel/hap",
+    "t": "2025-06",
+    "openrank_t": 0.67,
+    "openrank_t_plus_3": 0.68,
+    "y_growth": 0.014925
+  },
+  {
+    "repo": "Goldziher/interface-forge",
+    "t": "2025-06",
+    "openrank_t": 4.51,
+    "openrank_t_plus_3": 0.29,
+    "y_growth": -0.935698
+  },
+  {
+    "repo": "tree-sitter/java-tree-sitter",
+    "t": "2025-06",
+    "openrank_t": 0.82,
+    "openrank_t_plus_3": 1.11,
+    "y_growth": 0.353659
+  },
+  {
+    "repo": "liqd/adhocracy-plus",
+    "t": "2025-06",
+    "openrank_t": 5.16,
+    "openrank_t_plus_3": 5.28,
+    "y_growth": 0.023256
+  },
+  {
+    "repo": "tox-dev/pyproject-fmt",
+    "t": "2025-06",
+    "openrank_t": 0.63,
+    "openrank_t_plus_3": 0.41,
+    "y_growth": -0.349206
+  },
+  {
+    "repo": "buildcores/buildcores-open-db",
+    "t": "2025-06",
+    "openrank_t": 4.13,
+    "openrank_t_plus_3": 4.63,
+    "y_growth": 0.121065
+  },
+  {
+    "repo": "senbox-org/snap-engine",
+    "t": "2025-06",
+    "openrank_t": 6.47,
+    "openrank_t_plus_3": 5.41,
+    "y_growth": -0.163833
+  },
+  {
+    "repo": "rust-lang/triagebot",
+    "t": "2025-06",
+    "openrank_t": 10.48,
+    "openrank_t_plus_3": 7.38,
+    "y_growth": -0.295802
+  },
+  {
+    "repo": "getindata/flink-http-connector",
+    "t": "2025-06",
+    "openrank_t": 2.17,
+    "openrank_t_plus_3": 3.95,
+    "y_growth": 0.820276
+  },
+  {
+    "repo": "FunnyGuilds/FunnyGuilds",
+    "t": "2025-06",
+    "openrank_t": 1,
+    "openrank_t_plus_3": 1.37,
+    "y_growth": 0.37
+  },
+  {
+    "repo": "ketilmo/balena-ads-b",
+    "t": "2025-06",
+    "openrank_t": 5.62,
+    "openrank_t_plus_3": 2.74,
+    "y_growth": -0.512456
+  },
+  {
+    "repo": "intel/ScalableVectorSearch",
+    "t": "2025-06",
+    "openrank_t": 9.55,
+    "openrank_t_plus_3": 9.63,
+    "y_growth": 0.008377
+  },
+  {
+    "repo": "oracle/oci-go-sdk",
+    "t": "2025-06",
+    "openrank_t": 3.01,
+    "openrank_t_plus_3": 1.57,
+    "y_growth": -0.478405
+  },
+  {
+    "repo": "kedacore/charts",
+    "t": "2025-06",
+    "openrank_t": 2.54,
+    "openrank_t_plus_3": 2.42,
+    "y_growth": -0.047244
+  },
+  {
+    "repo": "BG-Software-LLC/SuperiorSkyblock2",
+    "t": "2025-06",
+    "openrank_t": 15.59,
+    "openrank_t_plus_3": 17.56,
+    "y_growth": 0.126363
+  },
+  {
+    "repo": "MichealWayne/fe-tools",
+    "t": "2025-06",
+    "openrank_t": 3.45,
+    "openrank_t_plus_3": 2.13,
+    "y_growth": -0.382609
+  },
+  {
+    "repo": "dd-center/vdb",
+    "t": "2025-06",
+    "openrank_t": 11.55,
+    "openrank_t_plus_3": 12.11,
+    "y_growth": 0.048485
+  },
+  {
+    "repo": "vaadin/flow-crm-tutorial",
+    "t": "2025-06",
+    "openrank_t": 0.39,
+    "openrank_t_plus_3": 0.24,
+    "y_growth": -0.384615
+  },
+  {
+    "repo": "DelvUI/DelvUI",
+    "t": "2025-06",
+    "openrank_t": 1.86,
+    "openrank_t_plus_3": 2.81,
+    "y_growth": 0.510753
+  },
+  {
+    "repo": "Locietta/xanmod-kernel-WSL2",
+    "t": "2025-06",
+    "openrank_t": 3.16,
+    "openrank_t_plus_3": 1.58,
+    "y_growth": -0.5
+  },
+  {
+    "repo": "AbsaOSS/spline-spark-agent",
+    "t": "2025-06",
+    "openrank_t": 1.07,
+    "openrank_t_plus_3": 0.57,
+    "y_growth": -0.46729
+  },
+  {
+    "repo": "Nuku/Flexible-Survival",
+    "t": "2025-06",
+    "openrank_t": 3.8,
+    "openrank_t_plus_3": 3.26,
+    "y_growth": -0.142105
+  },
+  {
+    "repo": "zkldi/Tachi",
+    "t": "2025-06",
+    "openrank_t": 13.5,
+    "openrank_t_plus_3": 10.17,
+    "y_growth": -0.246667
+  },
+  {
+    "repo": "Maximoff/Apktool-M-translations",
+    "t": "2025-06",
+    "openrank_t": 2.92,
+    "openrank_t_plus_3": 1.96,
+    "y_growth": -0.328767
+  },
+  {
+    "repo": "broadinstitute/gatk-sv",
+    "t": "2025-06",
+    "openrank_t": 13.08,
+    "openrank_t_plus_3": 9.97,
+    "y_growth": -0.237768
+  },
+  {
+    "repo": "wheels-dev/wheels",
+    "t": "2025-06",
+    "openrank_t": 8.09,
+    "openrank_t_plus_3": 5.26,
+    "y_growth": -0.349815
+  },
+  {
+    "repo": "helium/denylist",
+    "t": "2025-06",
+    "openrank_t": 2.93,
+    "openrank_t_plus_3": 1.87,
+    "y_growth": -0.361775
+  },
+  {
+    "repo": "mate-desktop/mate-panel",
+    "t": "2025-06",
+    "openrank_t": 1.8,
+    "openrank_t_plus_3": 6.72,
+    "y_growth": 2.733333
+  },
+  {
+    "repo": "longhorn/longhorn-manager",
+    "t": "2025-06",
+    "openrank_t": 10.99,
+    "openrank_t_plus_3": 12.9,
+    "y_growth": 0.173794
+  },
+  {
+    "repo": "goatcorp/XIVLauncher.Core",
+    "t": "2025-06",
+    "openrank_t": 5.46,
+    "openrank_t_plus_3": 2.76,
+    "y_growth": -0.494505
+  },
+  {
+    "repo": "ArmoredTurtle/AFC-Klipper-Add-On",
+    "t": "2025-06",
+    "openrank_t": 12.52,
+    "openrank_t_plus_3": 6.88,
+    "y_growth": -0.450479
+  },
+  {
+    "repo": "siyuan-note/bazaar",
+    "t": "2025-06",
+    "openrank_t": 4.75,
+    "openrank_t_plus_3": 6.47,
+    "y_growth": 0.362105
+  },
+  {
+    "repo": "DataDog/chaos-controller",
+    "t": "2025-06",
+    "openrank_t": 6.66,
+    "openrank_t_plus_3": 2.56,
+    "y_growth": -0.615616
+  },
+  {
+    "repo": "pSpitzner/beets-flask",
+    "t": "2025-06",
+    "openrank_t": 6.36,
+    "openrank_t_plus_3": 6.2,
+    "y_growth": -0.025157
+  },
+  {
+    "repo": "raceintospace/raceintospace",
+    "t": "2025-06",
+    "openrank_t": 4.69,
+    "openrank_t_plus_3": 4.03,
+    "y_growth": -0.140725
+  },
+  {
+    "repo": "nferhat/fht-compositor",
+    "t": "2025-06",
+    "openrank_t": 3.91,
+    "openrank_t_plus_3": 4.04,
+    "y_growth": 0.033248
+  },
+  {
+    "repo": "florimondmanca/httpx-sse",
+    "t": "2025-06",
+    "openrank_t": 3.03,
+    "openrank_t_plus_3": 0.61,
+    "y_growth": -0.79868
+  },
+  {
+    "repo": "Samsung/TizenFX",
+    "t": "2025-06",
+    "openrank_t": 42.35,
+    "openrank_t_plus_3": 42.62,
+    "y_growth": 0.006375
+  },
+  {
+    "repo": "KapJI/capital-gains-calculator",
+    "t": "2025-06",
+    "openrank_t": 0.4,
+    "openrank_t_plus_3": 2.98,
+    "y_growth": 6.45
+  },
+  {
+    "repo": "SecObserve/SecObserve",
+    "t": "2025-06",
+    "openrank_t": 5.6,
+    "openrank_t_plus_3": 5.81,
+    "y_growth": 0.0375
+  },
+  {
+    "repo": "anthropics/anthropic-sdk-java",
+    "t": "2025-06",
+    "openrank_t": 1.68,
+    "openrank_t_plus_3": 1.82,
+    "y_growth": 0.083333
+  },
+  {
+    "repo": "ismslv/trinketos",
+    "t": "2025-06",
+    "openrank_t": 3.75,
+    "openrank_t_plus_3": 2.54,
+    "y_growth": -0.322667
+  },
+  {
+    "repo": "pelican-eggs/games-steamcmd",
+    "t": "2025-06",
+    "openrank_t": 6.88,
+    "openrank_t_plus_3": 5.9,
+    "y_growth": -0.142442
+  },
+  {
+    "repo": "OpenBMB/UltraEval-Audio",
+    "t": "2025-06",
+    "openrank_t": 3.46,
+    "openrank_t_plus_3": 3.07,
+    "y_growth": -0.112717
+  },
+  {
+    "repo": "elastic/golang-crossbuild",
+    "t": "2025-06",
+    "openrank_t": 2.95,
+    "openrank_t_plus_3": 1.76,
+    "y_growth": -0.40339
+  },
+  {
+    "repo": "balena-io/balena-cli",
+    "t": "2025-06",
+    "openrank_t": 2.4,
+    "openrank_t_plus_3": 6.08,
+    "y_growth": 1.533333
+  },
+  {
+    "repo": "openvanilla/openvanilla",
+    "t": "2025-06",
+    "openrank_t": 0.6,
+    "openrank_t_plus_3": 0.35,
+    "y_growth": -0.416667
+  },
+  {
+    "repo": "AmbitionEng/django-pghistory",
+    "t": "2025-06",
+    "openrank_t": 1.96,
+    "openrank_t_plus_3": 1.88,
+    "y_growth": -0.040816
+  },
+  {
+    "repo": "grafviktor/goto",
+    "t": "2025-06",
+    "openrank_t": 3.52,
+    "openrank_t_plus_3": 2.6,
+    "y_growth": -0.261364
+  },
+  {
+    "repo": "temporalio/sdk-dotnet",
+    "t": "2025-06",
+    "openrank_t": 3.57,
+    "openrank_t_plus_3": 3.41,
+    "y_growth": -0.044818
+  },
+  {
+    "repo": "dg/dibi",
+    "t": "2025-06",
+    "openrank_t": 0.46,
+    "openrank_t_plus_3": 0.95,
+    "y_growth": 1.065217
+  },
+  {
+    "repo": "hCaptcha/react-hcaptcha",
+    "t": "2025-06",
+    "openrank_t": 1.14,
+    "openrank_t_plus_3": 1.98,
+    "y_growth": 0.736842
+  },
+  {
+    "repo": "JustinBeckwith/retry-axios",
+    "t": "2025-06",
+    "openrank_t": 0.35,
+    "openrank_t_plus_3": 0.61,
+    "y_growth": 0.742857
+  },
+  {
+    "repo": "rasmuslos/ShelfPlayer",
+    "t": "2025-06",
+    "openrank_t": 7.08,
+    "openrank_t_plus_3": 13.26,
+    "y_growth": 0.872881
+  },
+  {
+    "repo": "hachyderm/community",
+    "t": "2025-06",
+    "openrank_t": 1.42,
+    "openrank_t_plus_3": 2.28,
+    "y_growth": 0.605634
+  },
+  {
+    "repo": "guibranco/BancosBrasileiros",
+    "t": "2025-06",
+    "openrank_t": 0.4,
+    "openrank_t_plus_3": 0.59,
+    "y_growth": 0.475
+  },
+  {
+    "repo": "bancolombia/scaffold-clean-architecture",
+    "t": "2025-06",
+    "openrank_t": 1.26,
+    "openrank_t_plus_3": 1.49,
+    "y_growth": 0.18254
+  },
+  {
+    "repo": "SecurityBrewery/catalyst",
+    "t": "2025-06",
+    "openrank_t": 2.65,
+    "openrank_t_plus_3": 3.26,
+    "y_growth": 0.230189
+  },
+  {
+    "repo": "nats-nui/nui",
+    "t": "2025-06",
+    "openrank_t": 4.31,
+    "openrank_t_plus_3": 3.72,
+    "y_growth": -0.136891
+  },
+  {
+    "repo": "neondatabase/serverless",
+    "t": "2025-06",
+    "openrank_t": 4.39,
+    "openrank_t_plus_3": 1.72,
+    "y_growth": -0.6082
+  },
+  {
+    "repo": "expressobits/steam-multiplayer-peer",
+    "t": "2025-06",
+    "openrank_t": 5.26,
+    "openrank_t_plus_3": 0.71,
+    "y_growth": -0.865019
+  },
+  {
+    "repo": "QuiltMC/quilt-loader",
+    "t": "2025-06",
+    "openrank_t": 0.44,
+    "openrank_t_plus_3": 2.28,
+    "y_growth": 4.181818
+  },
+  {
+    "repo": "Ipotrick/Daxa",
+    "t": "2025-06",
+    "openrank_t": 3.68,
+    "openrank_t_plus_3": 1.95,
+    "y_growth": -0.470109
+  },
+  {
+    "repo": "TissueImageAnalytics/tiatoolbox",
+    "t": "2025-06",
+    "openrank_t": 8.53,
+    "openrank_t_plus_3": 7.37,
+    "y_growth": -0.135991
+  },
+  {
+    "repo": "astra-sim/astra-sim",
+    "t": "2025-06",
+    "openrank_t": 3.21,
+    "openrank_t_plus_3": 3.35,
+    "y_growth": 0.043614
+  },
+  {
+    "repo": "microsoft/azure-devops-node-api",
+    "t": "2025-06",
+    "openrank_t": 1.88,
+    "openrank_t_plus_3": 1.24,
+    "y_growth": -0.340426
+  },
+  {
+    "repo": "PyLops/pylops",
+    "t": "2025-06",
+    "openrank_t": 3.23,
+    "openrank_t_plus_3": 3.61,
+    "y_growth": 0.117647
+  },
+  {
+    "repo": "pfsense/FreeBSD-ports",
+    "t": "2025-06",
+    "openrank_t": 2.5,
+    "openrank_t_plus_3": 2.81,
+    "y_growth": 0.124
+  },
+  {
+    "repo": "silva96/log_bench",
+    "t": "2025-06",
+    "openrank_t": 3.05,
+    "openrank_t_plus_3": 4.74,
+    "y_growth": 0.554098
+  },
+  {
+    "repo": "amzn/amzn-drivers",
+    "t": "2025-06",
+    "openrank_t": 4.04,
+    "openrank_t_plus_3": 1.06,
+    "y_growth": -0.737624
+  },
+  {
+    "repo": "0auBSQ/OpenTaiko",
+    "t": "2025-06",
+    "openrank_t": 10.78,
+    "openrank_t_plus_3": 2.87,
+    "y_growth": -0.733766
+  },
+  {
+    "repo": "noahbald/oxvg",
+    "t": "2025-06",
+    "openrank_t": 5.23,
+    "openrank_t_plus_3": 2.87,
+    "y_growth": -0.451243
+  },
+  {
+    "repo": "friflo/Friflo.Engine.ECS",
+    "t": "2025-06",
+    "openrank_t": 6,
+    "openrank_t_plus_3": 4.98,
+    "y_growth": -0.17
+  },
+  {
+    "repo": "Eventuous/eventuous",
+    "t": "2025-06",
+    "openrank_t": 1.37,
+    "openrank_t_plus_3": 2.03,
+    "y_growth": 0.481752
+  },
+  {
+    "repo": "orca-so/whirlpools",
+    "t": "2025-06",
+    "openrank_t": 10.98,
+    "openrank_t_plus_3": 7.21,
+    "y_growth": -0.343352
+  },
+  {
+    "repo": "skyvers/skyve",
+    "t": "2025-06",
+    "openrank_t": 6.11,
+    "openrank_t_plus_3": 5.98,
+    "y_growth": -0.021277
+  },
+  {
+    "repo": "rxrbln/t2sde",
+    "t": "2025-06",
+    "openrank_t": 4.45,
+    "openrank_t_plus_3": 4.96,
+    "y_growth": 0.114607
+  },
+  {
+    "repo": "paradigmxyz/solar",
+    "t": "2025-06",
+    "openrank_t": 8.46,
+    "openrank_t_plus_3": 8.65,
+    "y_growth": 0.022459
+  },
+  {
+    "repo": "rsvim/rsvim",
+    "t": "2025-06",
+    "openrank_t": 6.18,
+    "openrank_t_plus_3": 5.34,
+    "y_growth": -0.135922
+  },
+  {
+    "repo": "bigbigmdm/IMSProg",
+    "t": "2025-06",
+    "openrank_t": 5.68,
+    "openrank_t_plus_3": 3.69,
+    "y_growth": -0.350352
+  },
+  {
+    "repo": "istio/api",
+    "t": "2025-06",
+    "openrank_t": 5.67,
+    "openrank_t_plus_3": 2.46,
+    "y_growth": -0.566138
+  },
+  {
+    "repo": "bazelbuild/bazel-watcher",
+    "t": "2025-06",
+    "openrank_t": 5.15,
+    "openrank_t_plus_3": 2.78,
+    "y_growth": -0.460194
+  },
+  {
+    "repo": "MicrosoftDocs/terminal",
+    "t": "2025-06",
+    "openrank_t": 1.79,
+    "openrank_t_plus_3": 1.84,
+    "y_growth": 0.027933
+  },
+  {
+    "repo": "TheElixZammuto/moonlight-xbox",
+    "t": "2025-06",
+    "openrank_t": 4.11,
+    "openrank_t_plus_3": 2.89,
+    "y_growth": -0.296837
+  },
+  {
+    "repo": "hotovo/aider-desk",
+    "t": "2025-06",
+    "openrank_t": 14.61,
+    "openrank_t_plus_3": 15.58,
+    "y_growth": 0.066393
+  },
+  {
+    "repo": "ovn-kubernetes/ovn-kubernetes",
+    "t": "2025-06",
+    "openrank_t": 39.61,
+    "openrank_t_plus_3": 57.58,
+    "y_growth": 0.453673
+  },
+  {
+    "repo": "google/kati",
+    "t": "2025-06",
+    "openrank_t": 2.1,
+    "openrank_t_plus_3": 2.33,
+    "y_growth": 0.109524
+  },
+  {
+    "repo": "antfu/antfu.me",
+    "t": "2025-06",
+    "openrank_t": 1.54,
+    "openrank_t_plus_3": 1.08,
+    "y_growth": -0.298701
+  },
+  {
+    "repo": "holzschu/ios_system",
+    "t": "2025-06",
+    "openrank_t": 1.38,
+    "openrank_t_plus_3": 0.71,
+    "y_growth": -0.485507
+  },
+  {
+    "repo": "abarichello/godot-ci",
+    "t": "2025-06",
+    "openrank_t": 1.07,
+    "openrank_t_plus_3": 1.74,
+    "y_growth": 0.626168
+  },
+  {
+    "repo": "SeedSigner/seedsigner",
+    "t": "2025-06",
+    "openrank_t": 9.76,
+    "openrank_t_plus_3": 11.8,
+    "y_growth": 0.209016
+  },
+  {
+    "repo": "publiclab/plots2",
+    "t": "2025-06",
+    "openrank_t": 1.39,
+    "openrank_t_plus_3": 0.44,
+    "y_growth": -0.683453
+  },
+  {
+    "repo": "galkahana/PDF-Writer",
+    "t": "2025-06",
+    "openrank_t": 2.55,
+    "openrank_t_plus_3": 2.16,
+    "y_growth": -0.152941
+  },
+  {
+    "repo": "neon-mmd/websurfx",
+    "t": "2025-06",
+    "openrank_t": 3.06,
+    "openrank_t_plus_3": 1.37,
+    "y_growth": -0.552288
+  },
+  {
+    "repo": "mfactory-osaka/ESPTimeCast",
+    "t": "2025-06",
+    "openrank_t": 0.67,
+    "openrank_t_plus_3": 6.18,
+    "y_growth": 8.223881
+  },
+  {
+    "repo": "woocommerce/storefront",
+    "t": "2025-06",
+    "openrank_t": 0.64,
+    "openrank_t_plus_3": 0.48,
+    "y_growth": -0.25
+  },
+  {
+    "repo": "pytorch/tensordict",
+    "t": "2025-06",
+    "openrank_t": 4.29,
+    "openrank_t_plus_3": 6.96,
+    "y_growth": 0.622378
+  },
+  {
+    "repo": "containers/podman-tui",
+    "t": "2025-06",
+    "openrank_t": 2.41,
+    "openrank_t_plus_3": 1.44,
+    "y_growth": -0.40249
+  },
+  {
+    "repo": "coinbase/onchainkit",
+    "t": "2025-06",
+    "openrank_t": 19.37,
+    "openrank_t_plus_3": 10.86,
+    "y_growth": -0.439339
+  },
+  {
+    "repo": "causaly/zod-validation-error",
+    "t": "2025-06",
+    "openrank_t": 6.56,
+    "openrank_t_plus_3": 4.81,
+    "y_growth": -0.266768
+  },
+  {
+    "repo": "coinbase/agentkit",
+    "t": "2025-06",
+    "openrank_t": 9.81,
+    "openrank_t_plus_3": 12.33,
+    "y_growth": 0.256881
+  },
+  {
+    "repo": "newrelic/node-newrelic",
+    "t": "2025-06",
+    "openrank_t": 17.85,
+    "openrank_t_plus_3": 20.18,
+    "y_growth": 0.130532
+  },
+  {
+    "repo": "python-semantic-release/python-semantic-release",
+    "t": "2025-06",
+    "openrank_t": 6.51,
+    "openrank_t_plus_3": 6.92,
+    "y_growth": 0.06298
+  },
+  {
+    "repo": "zinja-coder/jadx-ai-mcp",
+    "t": "2025-06",
+    "openrank_t": 1.28,
+    "openrank_t_plus_3": 3.37,
+    "y_growth": 1.632812
+  },
+  {
+    "repo": "fsspec/s3fs",
+    "t": "2025-06",
+    "openrank_t": 2.32,
+    "openrank_t_plus_3": 0.96,
+    "y_growth": -0.586207
+  },
+  {
+    "repo": "djblue/portal",
+    "t": "2025-06",
+    "openrank_t": 2.21,
+    "openrank_t_plus_3": 1.1,
+    "y_growth": -0.502262
+  },
+  {
+    "repo": "futureverse/future",
+    "t": "2025-06",
+    "openrank_t": 0.81,
+    "openrank_t_plus_3": 0.75,
+    "y_growth": -0.074074
+  },
+  {
+    "repo": "open-cluster-management-io/ocm",
+    "t": "2025-06",
+    "openrank_t": 12.41,
+    "openrank_t_plus_3": 9.52,
+    "y_growth": -0.232877
+  },
+  {
+    "repo": "cocogitto/cocogitto",
+    "t": "2025-06",
+    "openrank_t": 1.31,
+    "openrank_t_plus_3": 1.31,
+    "y_growth": 0.0
+  },
+  {
+    "repo": "Azure-Samples/Cognitive-Speech-TTS",
+    "t": "2025-06",
+    "openrank_t": 3.3,
+    "openrank_t_plus_3": 1.89,
+    "y_growth": -0.427273
+  },
+  {
+    "repo": "trzsz/trzsz-go",
+    "t": "2025-06",
+    "openrank_t": 1.73,
+    "openrank_t_plus_3": 0.64,
+    "y_growth": -0.630058
+  },
+  {
+    "repo": "rusefi/rusefi",
+    "t": "2025-06",
+    "openrank_t": 25.89,
+    "openrank_t_plus_3": 23.93,
+    "y_growth": -0.075705
+  },
+  {
+    "repo": "mtrojnar/osslsigncode",
+    "t": "2025-06",
+    "openrank_t": 5.82,
+    "openrank_t_plus_3": 3.68,
+    "y_growth": -0.367698
+  },
+  {
+    "repo": "steinbergmedia/vstgui",
+    "t": "2025-06",
+    "openrank_t": 4.69,
+    "openrank_t_plus_3": 2.9,
+    "y_growth": -0.381663
+  },
+  {
+    "repo": "UniMath/UniMath",
+    "t": "2025-06",
+    "openrank_t": 9.48,
+    "openrank_t_plus_3": 2.26,
+    "y_growth": -0.761603
+  },
+  {
+    "repo": "apache/artemis",
+    "t": "2025-06",
+    "openrank_t": 19.02,
+    "openrank_t_plus_3": 15.23,
+    "y_growth": -0.199264
+  },
+  {
+    "repo": "Jacobtims/filament-breezy",
+    "t": "2025-06",
+    "openrank_t": 7.25,
+    "openrank_t_plus_3": 4.06,
+    "y_growth": -0.44
+  },
+  {
+    "repo": "LiveBench/LiveBench",
+    "t": "2025-06",
+    "openrank_t": 9.93,
+    "openrank_t_plus_3": 2.74,
+    "y_growth": -0.724068
+  },
+  {
+    "repo": "Trow-Registry/trow",
+    "t": "2025-06",
+    "openrank_t": 2.24,
+    "openrank_t_plus_3": 0.89,
+    "y_growth": -0.602679
+  },
+  {
+    "repo": "void-linux/xbps",
+    "t": "2025-06",
+    "openrank_t": 4.31,
+    "openrank_t_plus_3": 2.91,
+    "y_growth": -0.324826
+  },
+  {
+    "repo": "bluez/bluez",
+    "t": "2025-06",
+    "openrank_t": 28.08,
+    "openrank_t_plus_3": 25.48,
+    "y_growth": -0.092593
+  },
+  {
+    "repo": "sdorra/content-collections",
+    "t": "2025-06",
+    "openrank_t": 7.58,
+    "openrank_t_plus_3": 4.31,
+    "y_growth": -0.431398
+  },
+  {
+    "repo": "dmzz-yyhyy/LightNovelReader",
+    "t": "2025-06",
+    "openrank_t": 5.84,
+    "openrank_t_plus_3": 7.01,
+    "y_growth": 0.200342
+  },
+  {
+    "repo": "Shopify/shopify-app-template-node",
+    "t": "2025-06",
+    "openrank_t": 0.86,
+    "openrank_t_plus_3": 0.7,
+    "y_growth": -0.186047
+  },
+  {
+    "repo": "apache/yunikorn-core",
+    "t": "2025-06",
+    "openrank_t": 7.95,
+    "openrank_t_plus_3": 1,
+    "y_growth": -0.874214
+  },
+  {
+    "repo": "ACEsuit/mace",
+    "t": "2025-06",
+    "openrank_t": 17.19,
+    "openrank_t_plus_3": 12.1,
+    "y_growth": -0.296102
+  },
+  {
+    "repo": "MicrosoftDocs/windows-driver-docs",
+    "t": "2025-06",
+    "openrank_t": 4.1,
+    "openrank_t_plus_3": 4.42,
+    "y_growth": 0.078049
+  },
+  {
+    "repo": "cdimascio/express-openapi-validator",
+    "t": "2025-06",
+    "openrank_t": 5.45,
+    "openrank_t_plus_3": 4.24,
+    "y_growth": -0.222018
+  },
+  {
+    "repo": "cloudflare/pint",
+    "t": "2025-06",
+    "openrank_t": 6.54,
+    "openrank_t_plus_3": 3.85,
+    "y_growth": -0.411315
+  },
+  {
+    "repo": "reactiveui/splat",
+    "t": "2025-06",
+    "openrank_t": 0.82,
+    "openrank_t_plus_3": 1.72,
+    "y_growth": 1.097561
+  },
+  {
+    "repo": "FancyWM/fancywm",
+    "t": "2025-06",
+    "openrank_t": 2.04,
+    "openrank_t_plus_3": 2.71,
+    "y_growth": 0.328431
+  },
+  {
+    "repo": "GiantappMan/livewallpaper",
+    "t": "2025-06",
+    "openrank_t": 2,
+    "openrank_t_plus_3": 1.8,
+    "y_growth": -0.1
+  },
+  {
+    "repo": "skydoves/FlexibleBottomSheet",
+    "t": "2025-06",
+    "openrank_t": 0.67,
+    "openrank_t_plus_3": 0.51,
+    "y_growth": -0.238806
+  },
+  {
+    "repo": "getsentry/sentry-cocoa",
+    "t": "2025-06",
+    "openrank_t": 35.62,
+    "openrank_t_plus_3": 30.3,
+    "y_growth": -0.149354
+  },
+  {
+    "repo": "outfoxxed/hy3",
+    "t": "2025-06",
+    "openrank_t": 2.26,
+    "openrank_t_plus_3": 3.16,
+    "y_growth": 0.39823
+  },
+  {
+    "repo": "shadow3aaa/fas-rs",
+    "t": "2025-06",
+    "openrank_t": 2.95,
+    "openrank_t_plus_3": 0.86,
+    "y_growth": -0.708475
+  },
+  {
+    "repo": "abahmed/kwatch",
+    "t": "2025-06",
+    "openrank_t": 0.61,
+    "openrank_t_plus_3": 1.05,
+    "y_growth": 0.721311
+  },
+  {
+    "repo": "ios12checker/Windows-Maintenance-Tool",
+    "t": "2025-06",
+    "openrank_t": 4.46,
+    "openrank_t_plus_3": 4.56,
+    "y_growth": 0.022422
+  },
+  {
+    "repo": "Kron4ek/Conty",
+    "t": "2025-06",
+    "openrank_t": 4.34,
+    "openrank_t_plus_3": 1.63,
+    "y_growth": -0.624424
+  },
+  {
+    "repo": "foundry-rs/forge-std",
+    "t": "2025-06",
+    "openrank_t": 0.79,
+    "openrank_t_plus_3": 2.5,
+    "y_growth": 2.164557
+  },
+  {
+    "repo": "muyoou/st-memory-enhancement",
+    "t": "2025-06",
+    "openrank_t": 10.23,
+    "openrank_t_plus_3": 5.13,
+    "y_growth": -0.498534
+  },
+  {
+    "repo": "sunpy/sunpy",
+    "t": "2025-06",
+    "openrank_t": 18.02,
+    "openrank_t_plus_3": 6.99,
+    "y_growth": -0.612098
+  }
+]

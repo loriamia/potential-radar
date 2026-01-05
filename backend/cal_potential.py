@@ -1,74 +1,117 @@
-from openrank_analysis import batch_analysis_repos
+import json
+import ssl
+import urllib.request
+import gzip
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import numpy as np
-import pandas as pd
 
-def standardize_data(raw_data_df, metrics, negative_metrics=None):
-    """
-    数据标准化函数（处理负向指标、极差过大问题，映射到[0,1]区间）
-    参数:
-        raw_data_df: 原始数据DataFrame
-        metrics: 动态指标数组
-        negative_metrics: 负向指标列表（数值越小越好）
-    返回:
-        standardized_df: 标准化后的DataFrame
-    """
-    if negative_metrics is None:
-        negative_metrics = []
-    standardized_data = np.zeros_like(raw_data_df[metrics].values, dtype=np.float64)
-    raw_metric_data = raw_data_df[metrics].values
+# =========================
+# 配置
+# =========================
 
-    for idx, metric in enumerate(metrics):
-        col_data = raw_metric_data[:, idx].copy()
-        # Z-Score标准化（消除量纲和极差影响）
-        mean_val = np.mean(col_data)
-        std_val = np.std(col_data)
-        if std_val == 0:
-            z_score = np.full_like(col_data, 0.5, dtype=np.float64)
-        else:
-            z_score = (col_data - mean_val) / std_val
+REQUEST_TIMEOUT = 10
+HEADERS = {
+    "User-Agent": "Mozilla/5.0"
+}
 
-        # 映射到[0,1]区间
-        min_z = np.min(z_score)
-        max_z = np.max(z_score)
-        if max_z == min_z:
-            standardized_col = np.full_like(z_score, 0.5, dtype=np.float64)
-        else:
-            standardized_col = (z_score - min_z) / (max_z - min_z)
+# 使用你已经验证过的 Model B 权重（标准化特征）
+POTENTIAL_WEIGHTS = {
+    "activity_trend": 0.6717,
+    "participants_trend": -0.2348,
+    "bus_factor_jump": 0.1755,
+    "issue_response_time_trend": 0.1356,
+    "contributors_jump": 0.0100,
+    "openrank_trend": 0.2
+}
 
-        # 负向指标反向处理
-        if metric in negative_metrics:
-            standardized_col = 1 - standardized_col
+METRICS = [
+    "activity",
+    "participants",
+    "contributors",
+    "bus_factor",
+    "issue_response_time",
+    "openrank"
+]
 
-        standardized_data[:, idx] = standardized_col
+# =========================
+# 工具函数
+# =========================
 
-    standardized_df = pd.DataFrame(standardized_data, columns=metrics, index=raw_data_df.index)
-    return standardized_df
+def last_n_months(n=6):
+    end = datetime.now().replace(day=1)
+    months = []
+    for i in range(n):
+        m = end - relativedelta(months=n - i)
+        months.append(m.strftime("%Y-%m"))
+    return months
 
-def cal(data):
-    result = 0.6 * data['activity'] + 0.4 * data["contributors_per_participant"]
-    print(result)
-    return result
 
-if __name__ == "__main__":
-    # 示例仓库和指标
-    repo = "AdguardTeam/AdguardFilters"  # 单个仓库地址
-    metrics = ["inactive_contributors", "contributors", "participants", "bus_factor",
-                "issue_resolution_duration", "change_request_resolution_duration", 
-                "activity", "issue_response_time", "change_request_response_time", "openrank"]
+def fetch_metric(repo, metric, months):
+    owner, name = repo.split("/")
+    url = f"https://oss.open-digger.cn/github/{owner}/{name}/{metric}.json"
 
-    # 调用batch_analysis_repos获取数据
-    detailed_data = batch_analysis_repos(repo, metrics)
+    ssl_context = ssl._create_unverified_context()
+    request = urllib.request.Request(url, headers=HEADERS)
 
-    # 计算各参数的三个月平均值
-    data = {}
-    for metric in metrics:
-        data_list = detailed_data[metric]
-        if data_list:
-            avg = sum(data_list) / len(data_list)
-            data[metric] = round(avg, 2)
-        else:
-            data[metric] = 0
+    with urllib.request.urlopen(request, context=ssl_context, timeout=REQUEST_TIMEOUT) as resp:
+        raw = resp.read()
+        if resp.headers.get("Content-Encoding") == "gzip":
+            raw = gzip.decompress(raw)
 
-    data["contributors_per_participant"] = data['contributors'] / data['participants'] if data['participants'] != 0 else 0
-    print("各参数的三个月平均值:", data)
-    cal(data)
+        data = json.loads(raw.decode("utf-8"))
+
+    time_series = data.get("avg", data)
+    values = []
+
+    for m in months:
+        values.append(float(time_series.get(m, 0)))
+
+    return values
+
+
+# =========================
+# 指标计算
+# =========================
+
+def calc_trend(values):
+    if len(values) < 2:
+        return 0.0
+    return (values[-1] - values[0]) / (abs(values[0]) + 1e-6)
+
+
+def calc_jump(values):
+    if len(values) < 2:
+        return 0.0
+    return int(values[-1] > values[0])
+
+
+# =========================
+# 核心对外函数
+# =========================
+
+def compute_repo_potential(repo: str):
+    months = last_n_months(6)
+
+    detailed_data = {}
+    for metric in METRICS:
+        detailed_data[metric] = fetch_metric(repo, metric, months)
+
+    # trending_data（与你之前实验一致）
+    trending_data = {
+        "activity_trend": calc_trend(detailed_data["activity"]),
+        "participants_trend": calc_trend(detailed_data["participants"]),
+        "contributors_jump": calc_jump(detailed_data["contributors"]),
+        "bus_factor_jump": calc_jump(detailed_data["bus_factor"]),
+        "issue_response_time_trend": -calc_trend(detailed_data["issue_response_time"]),
+        "openrank_trend": calc_trend(detailed_data["openrank"])
+    }
+
+    # 潜力值（线性模型）
+    potential = 0.0
+    for k, w in POTENTIAL_WEIGHTS.items():
+        potential += w * trending_data.get(k, 0.0)
+
+    potential = (round(float(potential), 4) + 1) * 100
+
+    return detailed_data, trending_data, potential
