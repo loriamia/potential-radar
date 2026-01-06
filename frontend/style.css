@@ -1,0 +1,385 @@
+/* style.css - 仓库潜力分析工具样式 */
+
+/* 基础样式 */
+body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+/* 标题样式 */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-weight: 300;
+    font-size: 2.5em;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #2196F3);
+    border-radius: 2px;
+}
+
+h3 {
+    color: #34495e;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    color: #2c3e50;
+    margin: 20px 0 10px;
+    font-weight: 500;
+}
+
+/* 输入区域样式 */
+.input-group {
+    margin-bottom: 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+input[type="text"] {
+    padding: 12px 15px;
+    width: 400px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* 按钮样式 */
+button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 加载状态 */
+.loading {
+    color: #666;
+    text-align: center;
+    padding: 30px;
+    display: none;
+    font-size: 16px;
+}
+
+.loading:before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #4CAF50;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 错误信息 */
+.error {
+    color: #e74c3c;
+    margin-top: 10px;
+    padding: 12px;
+    background: #ffebee;
+    border-left: 4px solid #e74c3c;
+    border-radius: 4px;
+    display: none;
+}
+
+/* 结果容器 */
+.result {
+    margin-top: 20px;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+/* 潜力值显示 */
+#potential {
+    font-size: 2em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #4CAF50, #2196F3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+/* 数据展示 */
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #4CAF50;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 仪表板容器 */
+#dashboard-container {
+    margin: 30px 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 400px 400px;
+    gap: 25px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4CAF50, #2196F3);
+}
+
+/* 调试信息面板 */
+#debug-info {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f0f7ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 12px;
+    max-height: 350px;
+    overflow: auto;
+    line-height: 1.5;
+}
+
+.debug-button {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s;
+}
+
+.debug-button:hover {
+    background: #1976D2;
+}
+
+/* 原始数据展示 */
+#raw-data {
+    display: none;
+    margin-top: 15px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#raw-data pre {
+    margin: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+/* 连接警告 */
+.connection-warning {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background: #fff3cd;
+    border: 1px solid #ffecb5;
+    border-radius: 8px;
+    color: #856404;
+    font-size: 13px;
+    z-index: 1000;
+    max-width: 320px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(4, 350px) !important;
+        gap: 15px;
+    }
+    
+    input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .input-group {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid {
+        grid-template-rows: repeat(4, 300px) !important;
+    }
+    
+    .chart-container {
+        padding: 15px;
+    }
+}
+
+/* 调试信息样式 */
+.debug-info {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f7ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.debug-info h4 {
+    margin-top: 0;
+    color: #0066cc;
+}
+
+.debug-info ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+.debug-info li {
+    margin: 3px 0;
+}
+
+.debug-info code {
+    background: #e8f4fd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Consolas', monospace;
+}
+
+/* 图表容器样式优化 */
+.chart-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-container:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}

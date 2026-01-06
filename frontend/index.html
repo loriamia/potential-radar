@@ -4,57 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
     <title>仓库潜力分析工具</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .container {
-            margin-top: 20px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        input {
-            padding: 8px;
-            width: 300px;
-            margin-right: 10px;
-        }
-        button {
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            display: none;
-        }
-        .loading {
-            color: #666;
-            display: none;
-        }
-        .error {
-            color: #dc3545;
-            margin-top: 10px;
-        }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-    </style>
 </head>
 <body>
     <h1>仓库潜力分析工具</h1>
@@ -69,15 +20,17 @@
         <div class="result" id="resultContainer">
             <h3>分析结果: <span id="repoName"></span></h3>
             <p><strong>潜力值:</strong> <span id="potential" style="font-size: 1.2em; color: #2c3e50;"></span></p>
-            
-                <!-- 新增图表容器 -->
-                <div style="width: 100%; height: 400px; margin: 20px 0;" id="activityChart"></div>
                 
-
-            <h4>平均值数据:</h4>
-            <pre id="averagedData"></pre>
-            <h4>详细数据:</h4>
-            <pre id="detailedData"></pre>
+            <!-- 仪表板容器 -->
+            <div id="dashboard-container"></div>
+            
+            <!-- 原有的数据展示区域 -->
+            <div style="margin-top: 30px;">
+                <h4>六位指标数据:</h4>
+                <pre id="averagedData"></pre>
+                <h4>详细数据:</h4>
+                <pre id="detailedData"></pre>
+            </div>
         </div>
     </div>
 
@@ -130,12 +83,16 @@
                 resultContainer.style.display = 'block';
 
             if (data.detailed_data && data.detailed_data.activity) {
-                const chartContainer = document.getElementById('activityChart');
+                const chartContainer = document.getElementById('dashboard-container');
                 // 时间轴数据（根据实际业务场景修改，这里以季度为例）
                 const timeLabels = ['Q1', 'Q2', 'Q3', 'Q4'];  // 与activity数组长度对应
-                // 传入活动数据和时间轴
-                initActivityBarChart(chartContainer, data.detailed_data.activity, timeLabels);
+            // 准备仪表板数据
+            const dashboardData = prepareDashboardData(data);
+            
+            // 创建仪表板
+            createPotentialDashboard(dashboardContainer, dashboardData, ['一月', '二月', '三月', '四月', '5月', '6月']);
             }
+
             } catch (err) {
                 errorMsg.textContent = err.message;
             } finally {
