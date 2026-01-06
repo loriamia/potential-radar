@@ -6,21 +6,6 @@ from datetime import datetime, timedelta
 GITHUB_SEARCH_API = "https://api.github.com/search/repositories"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_TRENDING_URL = "https://github.com/trending"
-GITHUB_URLS = [
-            #     "https://github.com/search?q=stars%3A%3C100+pushed%3A%3E2025-12-01+&type=repositories",
-            #    "https://github.com/search?q=stars%3A%3C100+pushed%3A%3E2025-12-01+&type=repositories&p=2",
-            #    "https://github.com/search?q=stars%3A%3C100+pushed%3A%3E2025-12-01+&type=repositories&p=3",
-               "https://github.com/search?q=stars%3A%3C1000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc",
-               "https://github.com/search?q=stars%3A%3C1000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=2",
-               "https://github.com/search?q=stars%3A%3C1000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=3",
-            #    "https://github.com/search?q=stars%3A%3C10000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc",
-            #    "https://github.com/search?q=stars%3A%3C10000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=2",
-            #    "https://github.com/search?q=stars%3A%3C10000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=3",
-            #    "https://github.com/search?q=stars%3A%3C100000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc",
-            #    "https://github.com/search?q=stars%3A%3C100000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=2",
-            #    "https://github.com/search?q=stars%3A%3C100000+pushed%3A%3E2025-12-01+&type=repositories&s=&o=desc&p=3"
-               ]
-
 SEARCH_QUEARYS = [
                     "stars:50..100 pushed:>2025-12-01",
                     "stars:100..200 pushed:>2025-12-01",

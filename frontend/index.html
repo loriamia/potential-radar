@@ -24,6 +24,20 @@
             <!-- 仪表板容器 -->
             <div id="dashboard-container"></div>
             
+            <div class="input-group">
+                <div id="ai-description">
+                    <button id="aiSuggestBtn">AI生成评价</button>
+                    <span id="btn-description">AI将基于指标数据，给出评价和建议</span>                    
+                </div>
+                <div class="loading" id="aiLoading">AI正在生成评价和建议，请稍候...</div>
+                <div class="result" id="aiSuggestContainer" style="margin-top: 10px;">
+                    <h4>AI分析:</h4>
+                    <pre id="aiSuggestContent"></pre>
+                </div>            
+            </div>
+
+
+
             <!-- 原有的数据展示区域 -->
             <div style="margin-top: 30px;">
                 <h4>六位指标数据:</h4>
@@ -35,6 +49,9 @@
     </div>
 
     <script src="visualization.js"></script>
+    <script src="ai_suggestion.js"></script>
+    <!-- 引入marked.js CDN，支持所有主流Markdown语法 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         const analyzeBtn = document.getElementById('analyzeBtn');
         const repoInput = document.getElementById('repo');
