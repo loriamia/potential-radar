@@ -117,7 +117,7 @@ function createComboChart(container, data, months) {
                     params.forEach(p => {
                         const value = p.value || 0;
                         const unit = p.seriesName === '潜力指数' ? '分' : '活跃度';
-                        const color = p.color || p.seriesName === '活动数据' ? '#4CAF50' : '#2196F3';
+                        const color = p.color || p.seriesName === '活动数据' ? '#65BDBA' : '#3C9BC9';
                         result += `
                             <div style="display:flex;align-items:center;margin:2px 0;">
                                 <span style="display:inline-block;width:10px;height:10px;background:${color};border-radius:50%;margin-right:5px;"></span>
@@ -134,14 +134,14 @@ function createComboChart(container, data, months) {
                         
                         result += `<hr style="margin:5px 0;border:none;border-top:1px dashed #ddd;">`;
                         result += `<div style="font-size:12px;color:#666;">`;
-                        result += `活动变化: <span style="color:${activityChange >= 0 ? '#4CAF50' : '#F44336'}">${activityChange >= 0 ? '+' : ''}${activityChange.toFixed(1)}</span><br>`;
-                        result += `潜力变化: <span style="color:${potentialChange >= 0 ? '#2196F3' : '#F44336'}">${potentialChange >= 0 ? '+' : ''}${potentialChange.toFixed(1)}分</span>`;
+                        result += `活动变化: <span style="color:${activityChange >= 0 ? '#65BDBA' : '#FC757B'}">${activityChange >= 0 ? '+' : ''}${activityChange.toFixed(1)}</span><br>`;
+                        result += `潜力变化: <span style="color:${potentialChange >= 0 ? '#3C9BC9' : '#FC757B'}">${potentialChange >= 0 ? '+' : ''}${potentialChange.toFixed(1)}分</span>`;
                         
                         // 显示累计变化（从第一个月开始）
                         if (monthIndex > 0) {
                             const totalActivityChange = adjustedActivity[monthIndex] - adjustedActivity[0];
                             const totalPotentialChange = adjustedPotential[monthIndex] - adjustedPotential[0];
-                            result += `<div style="margin-top:3px;">累计变化: <span style="color:${totalActivityChange >= 0 ? '#4CAF50' : '#F44336'}">${totalActivityChange >= 0 ? '+' : ''}${totalActivityChange.toFixed(1)}</span> / <span style="color:${totalPotentialChange >= 0 ? '#2196F3' : '#F44336'}">${totalPotentialChange >= 0 ? '+' : ''}${totalPotentialChange.toFixed(1)}分</span></div>`;
+                            result += `<div style="margin-top:3px;">累计变化: <span style="color:${totalActivityChange >= 0 ? '#65BDBA' : '#FC757B'}">${totalActivityChange >= 0 ? '+' : ''}${totalActivityChange.toFixed(1)}</span> / <span style="color:${totalPotentialChange >= 0 ? '#3C9BC9' : '#FC757B'}">${totalPotentialChange >= 0 ? '+' : ''}${totalPotentialChange.toFixed(1)}分</span></div>`;
                         }
                         
                         result += `</div>`;
@@ -180,10 +180,10 @@ function createComboChart(container, data, months) {
                     position: 'left',
                     axisLine: { 
                         show: true,
-                        lineStyle: { color: '#4CAF50' }
+                        lineStyle: { color: '#65BDBA' }
                     },
-                    axisLabel: { color: '#4CAF50' },
-                    nameTextStyle: { color: '#4CAF50' },
+                    axisLabel: { color: '#65BDBA' },
+                    nameTextStyle: { color: '#65BDBA' },
                     splitLine: {
                         lineStyle: {
                             type: 'dashed',
@@ -199,10 +199,10 @@ function createComboChart(container, data, months) {
                     max: 200,
                     axisLine: { 
                         show: true,
-                        lineStyle: { color: '#2196F3' }
+                        lineStyle: { color: '#3C9BC9' }
                     },
-                    axisLabel: { color: '#2196F3' },
-                    nameTextStyle: { color: '#2196F3' },
+                    axisLabel: { color: '#3C9BC9' },
+                    nameTextStyle: { color: '#3C9BC9' },
                     splitLine: { show: false }
                 }
             ],
@@ -215,9 +215,9 @@ function createComboChart(container, data, months) {
                     barWidth: '60%',
                     itemStyle: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: '#81C784' },
-                            { offset: 0.5, color: '#4CAF50' },
-                            { offset: 1, color: '#388E3C' }
+                            { offset: 0, color: '#65BDBA' },
+                            { offset: 0.5, color: '#65BDBA' },
+                            { offset: 1, color: '#65BDBA' }
                         ]),
                         borderRadius: [4, 4, 0, 0],
                         shadowColor: 'rgba(76, 175, 80, 0.3)',
@@ -225,8 +225,8 @@ function createComboChart(container, data, months) {
                     },
                     emphasis: {
                         itemStyle: {
-                            color: '#2E7D32',
-                            shadowColor: 'rgba(46, 125, 50, 0.6)',
+                            color: '#3AB5B3',
+                            shadowColor: 'rgba(71, 157, 75, 0.6)',
                             shadowBlur: 8
                         }
                     },
@@ -234,7 +234,7 @@ function createComboChart(container, data, months) {
                         show: true,
                         position: 'top',
                         formatter: '{c}',
-                        color: '#2E7D32',
+                        color: '#3AB5B3',
                         fontSize: 12
                     }
                 },
@@ -245,7 +245,7 @@ function createComboChart(container, data, months) {
                     yAxisIndex: 1,
                     smooth: true,
                     lineStyle: { 
-                        color: '#2196F3',
+                        color: '#3C9BC9',
                         width: 3,
                         shadowColor: 'rgba(33, 150, 243, 0.3)',
                         shadowBlur: 6
@@ -253,7 +253,7 @@ function createComboChart(container, data, months) {
                     symbol: 'circle',
                     symbolSize: 8,
                     itemStyle: { 
-                        color: '#2196F3',
+                        color: '#3C9BC9',
                         borderColor: '#fff',
                         borderWidth: 2
                     },
@@ -267,13 +267,13 @@ function createComboChart(container, data, months) {
                         silent: true,
                         data: [{ type: 'average', name: '平均潜力' }],
                         lineStyle: { 
-                            color: '#FF9800', 
+                            color: '#FAA26F', 
                             type: 'dashed',
                             width: 1
                         },
                         label: { 
                             formatter: '平均: {c}',
-                            color: '#FF9800',
+                            color: '#FAA26F',
                             fontSize: 12
                         }
                     }
@@ -383,11 +383,11 @@ function createCorrelationHeatmap(container, data, months) {
                         <div style="color:#666;font-size:11px;margin-bottom:8px;">${config.description}</div>
                         <div style="display:flex;align-items:center;margin:3px 0;">
                             <span style="color:#666;margin-right:10px;">原始趋势值:</span>
-                            <span style="color:#2196F3;font-weight:bold;">${config.rawValue.toFixed(4)}</span>
+                            <span style="color:#3C9BC9;font-weight:bold;">${config.rawValue.toFixed(4)}</span>
                         </div>
                         <div style="display:flex;align-items:center;margin:3px 0;">
                             <span style="color:#666;margin-right:10px;">与潜力相关性:</span>
-                            <span style="color:${corr > 0 ? '#4CAF50' : '#F44336'};font-weight:bold;">
+                            <span style="color:${corr > 0 ? '#65BDBA' : '#FC757B'};font-weight:bold;">
                                 ${corr > 0 ? '+' : ''}${corr.toFixed(2)}
                             </span>
                         </div>
@@ -430,7 +430,7 @@ function createCorrelationHeatmap(container, data, months) {
                 text: ['强正相关', '强负相关'],
                 textStyle: { color: '#666' },
                 inRange: {
-                    color: ['#D32F2F', '#FFF', '#388E3C']
+                    color: ['#FC757B', '#fafafaff', '#B0D6A9']
                 }
             },
             series: [{
@@ -520,11 +520,11 @@ function generateHeatmapDataFromRawTrends(data, months, rawTrends) {
 }
 
 /**
- * 3. 雷达图 - 展示6个维度的原始趋势数据
+ * 3. 雷达图 - 展示6个维度的原始趋势数据（所有轴统一为-1到1）
+ * 正确坐标系：-1在圆心，0在轴的一半，1在最外圈
  */
 function createRadarChart(container, data) {
     try {
-        // 使用原始趋势数据和配置
         const rawTrends = data.rawTrends || [];
         const trendConfigs = data.trendConfigs || [];
         
@@ -536,29 +536,64 @@ function createRadarChart(container, data) {
         
         const chart = echarts.init(container);
         
-        // 创建雷达图指标配置
-        const indicators = trendConfigs.map((config, index) => {
-            // 根据趋势值动态调整范围
-            let maxValue = config.max;
-            let minValue = config.min;
+        console.log('原始趋势数据:', rawTrends);
+        
+        // 1. 所有指标统一为[-1, 1]范围
+        const indicators = trendConfigs.map(config => ({
+            name: config.name,
+            max: 1,    // 最外圈
+            min: -1    // 圆心
+        }));
+        
+        // 2. 计算显示值
+        const displayValues = [];
+        for (let i = 0; i < rawTrends.length; i++) {
+            const rawValue = rawTrends[i];
+            const config = trendConfigs[i];
             
-            // 如果原始值超过当前范围，扩大范围
-            const rawValue = rawTrends[index];
-            if (rawValue > maxValue) {
-                maxValue = Math.ceil(rawValue * 1.2);
-            }
-            if (rawValue < minValue) {
-                minValue = Math.floor(rawValue * 1.2);
+            let displayValue;
+            
+            if (config.name === '核心贡献者风险') {
+                // 风险值：0显示在轴的一半（0位置）
+                displayValue = rawValue;
+                console.log(`风险值: ${rawValue} -> 显示在: ${displayValue}`);
+            } else {
+                // 其他维度：已经是-1到1范围
+                displayValue = Math.max(-1, Math.min(1, rawValue));
             }
             
-            return {
-                name: config.name, // 只显示名称，不显示值
-                max: maxValue,
-                min: minValue,
-                color: '#666'
+            displayValues.push(displayValue);
+        }
+        
+        console.log('显示值:', displayValues);
+        
+        // 3. 为每个维度生成格式化标签
+        const formattedLabels = [];
+        for (let i = 0; i < rawTrends.length; i++) {
+            const rawValue = rawTrends[i];
+            const config = trendConfigs[i];
+            
+            if (config && config.format) {
+                formattedLabels.push(config.format(rawValue));
+            } else {
+                formattedLabels.push(rawValue.toFixed(3));
+            }
+        }
+        
+        console.log('格式化标签:', formattedLabels);
+        
+        // 4. 创建一个映射表，便于查找
+        const dimensionMap = {};
+        trendConfigs.forEach((config, index) => {
+            dimensionMap[config.name] = {
+                index: index,
+                rawValue: rawTrends[index],
+                formatted: formattedLabels[index],
+                displayValue: displayValues[index]
             };
         });
         
+        // 5. 创建option配置
         const option = {
             title: { 
                 text: '六维度仓库趋势分析',
@@ -568,87 +603,76 @@ function createRadarChart(container, data) {
             radar: {
                 indicator: indicators,
                 shape: 'circle',
-                splitNumber: 4,
+                splitNumber: 5,
+                radius: '65%',
                 axisName: {
                     color: '#666',
                     fontSize: 11,
-                    padding: [3, 5],
-                    formatter: function(name, indicator) {
-                        // 只在每个维度的名称后显示简短的值
-                        const config = trendConfigs.find(c => c.name === name);
-                        if (config) {
-                            const rawValue = config.rawValue;
-                            const formattedValue = config.format(rawValue);
-                            return `${name}\n${formattedValue}`;
-                        }
-                        return name;
-                    }
+                    padding: [3, 5]
                 },
                 splitArea: {
                     show: true,
                     areaStyle: {
-                        color: ['rgba(76, 175, 80, 0.05)', 'rgba(76, 175, 80, 0.10)', 
-                                'rgba(76, 175, 80, 0.15)', 'rgba(76, 175, 80, 0.20)']
+                        color: ['#f5f7fa', '#ffffff', '#f5f7fa', '#ffffff']
                     }
                 },
                 splitLine: {
                     lineStyle: {
-                        color: 'rgba(76, 175, 80, 0.3)'
+                        color: '#ddd'
                     }
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(76, 175, 80, 0.5)'
+                        color: '#ddd'
                     }
                 }
             },
             series: [{
-                name: '原始趋势值',
                 type: 'radar',
                 data: [{
-                    value: rawTrends,
+                    value: displayValues,
                     name: '趋势分析',
-                    label: {
-                        show: true,
-                        formatter: function(params) {
-                            // 显示格式化的值
-                            const config = trendConfigs[params.dataIndex];
-                            if (config) {
-                                return config.format(params.value);
-                            }
-                            return params.value.toFixed(2);
-                        },
-                        color: '#2196F3',
-                        fontSize: 10,
-                        fontWeight: 'bold'
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    lineStyle: {
+                        width: 2,
+                        color: '#3C9BC9'
                     },
-                    itemStyle: { 
-                        color: '#2196F3',
+                    areaStyle: {
+                        color: 'rgba(33, 150, 243, 0.2)'
+                    },
+                    itemStyle: {
+                        color: '#3C9BC9',
                         borderColor: '#fff',
                         borderWidth: 2
                     },
-                    lineStyle: { 
-                        color: '#2196F3', 
-                        width: 2,
-                        shadowColor: 'rgba(33, 150, 243, 0.3)',
-                        shadowBlur: 4
-                    },
-                    areaStyle: {
-                        color: new echarts.graphic.RadialGradient(0.5, 0.5, 0.8, [
-                            { offset: 0, color: 'rgba(33, 150, 243, 0.6)' },
-                            { offset: 0.7, color: 'rgba(33, 150, 243, 0.2)' },
-                            { offset: 1, color: 'rgba(33, 150, 243, 0.05)' }
-                        ])
-                    },
-                    emphasis: {
-                        lineStyle: {
-                            width: 4
+                    label: {
+                        show: true,
+                        position: 'top',
+                        distance: 5,
+                        // 关键修复：使用正确的索引获取格式化标签
+                        formatter: function(params) {
+                            // 在雷达图中，params.data是当前数据点的值
+                            // 我们需要找到这个值在displayValues中的索引
+                            const value = params.value || params.data;
+                            
+                            // 通过值找到对应的索引
+                            const index = findValueIndex(value, displayValues);
+                            if (index !== -1) {
+                                return formattedLabels[index];
+                            }
+                            
+                            // 备用方案：尝试通过其他方式获取索引
+                            const dimName = params.name || params.seriesName;
+                            if (dimName && dimensionMap[dimName]) {
+                                return formattedLabels[dimensionMap[dimName].index];
+                            }
+                            
+                            return '0%';
                         },
-                        itemStyle: {
-                            color: '#FF4081',
-                            shadowColor: 'rgba(255, 64, 129, 0.5)',
-                            shadowBlur: 8
-                        }
+                        color: '#3C9BC9',
+                        fontSize: 10,
+                        fontWeight: 'bold'
                     }
                 }]
             }],
@@ -656,18 +680,66 @@ function createRadarChart(container, data) {
                 {
                     type: 'text',
                     left: 'center',
-                    top: '95%',
+                    top: 40,
                     style: {
                         fill: '#666',
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: 'normal'
                     }
                 }
             ]
         };
         
+        // 辅助函数：通过值查找索引
+        function findValueIndex(value, array) {
+            // 允许一些误差，因为浮点数可能不完全相等
+            for (let i = 0; i < array.length; i++) {
+                if (Math.abs(array[i] - value) < 0.001) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        
+        // 辅助函数：获取评估信息
+        function getAssessment(dimName, rawValue) {
+            if (dimName === '核心贡献者风险') {
+                if (rawValue === 0) return { text: '无风险', color: '#65BDBA' };
+                if (rawValue <= 0.3) return { text: '低风险', color: '#8BC34A' };
+                if (rawValue <= 0.6) return { text: '中等风险', color: '#FFC107' };
+                return { text: '高风险', color: '#FC757B' };
+            }
+            
+            if (dimName === '问题响应趋势') {
+                if (rawValue < 0) return { text: '改善中', color: '#65BDBA' };
+                if (rawValue > 0) return { text: '在恶化', color: '#FC757B' };
+                return { text: '稳定', color: '#999' };
+            }
+            
+            if (rawValue > 0) return { text: '在增长', color: '#65BDBA' };
+            if (rawValue < 0) return { text: '在下降', color: '#FC757B' };
+            return { text: '稳定', color: '#999' };
+        }
+        
+        // 辅助函数：获取位置描述
+        function getPositionDescription(displayValue) {
+            if (displayValue === 0) return '轴的一半';
+            if (displayValue > 0) return '向外圈';
+            return '向圆心';
+        }
+        
         chart.setOption(option);
         window.addEventListener('resize', () => chart.resize());
+        
+        // 详细日志
+        console.log('=== 雷达图数据详情 ===');
+        trendConfigs.forEach((config, i) => {
+            console.log(`${i+1}. ${config.name}:`);
+            console.log(`   原始值: ${rawTrends[i]}`);
+            console.log(`   显示值: ${displayValues[i]}`);
+            console.log(`   标签: ${formattedLabels[i]}`);
+        });
+        
         return chart;
     } catch (error) {
         console.error('创建雷达图失败:', error);
@@ -701,12 +773,12 @@ function createProgressChart(container, data, months) {
                     if (params.componentType === 'gauge') {
                         const value = params.value || 0;
                         let rating = '待提升';
-                        let ratingColor = '#F44336';
+                        let ratingColor = '#FC757B';
                         let suggestions = [];
                         
                         if (value >= 90) {
                             rating = '卓越';
-                            ratingColor = '#4CAF50';
+                            ratingColor = '#65BDBA';
                             suggestions = ['保持当前节奏', '关注社区健康度'];
                         } else if (value >= 75) {
                             rating = '优秀';
@@ -733,8 +805,8 @@ function createProgressChart(container, data, months) {
                                 <span style="color:${ratingColor};font-weight:bold;">${rating}</span>
                             </div>
                             <div style="margin-top:8px;color:#666;font-size:12px;">
-                                <div>${potentialGrowth >= 0 ? '📈' : '📉'} 潜力变化: <span style="color:${potentialGrowth >= 0 ? '#4CAF50' : '#F44336'}">${potentialGrowth >= 0 ? '+' : ''}${potentialGrowth.toFixed(1)}分</span></div>
-                                <div>${activityGrowth >= 0 ? '📈' : '📉'} 活动变化: <span style="color:${activityGrowth >= 0 ? '#4CAF50' : '#F44336'}">${activityGrowth >= 0 ? '+' : ''}${activityGrowth.toFixed(1)}</span></div>
+                                <div>${potentialGrowth >= 0 ? '📈' : '📉'} 潜力变化: <span style="color:${potentialGrowth >= 0 ? '#65BDBA' : '#FC757B'}">${potentialGrowth >= 0 ? '+' : ''}${potentialGrowth.toFixed(1)}分</span></div>
+                                <div>${activityGrowth >= 0 ? '📈' : '📉'} 活动变化: <span style="color:${activityGrowth >= 0 ? '#65BDBA' : '#FC757B'}">${activityGrowth >= 0 ? '+' : ''}${activityGrowth.toFixed(1)}</span></div>
                             </div>
                             ${suggestions.length > 0 ? `
                                 <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;">
@@ -766,7 +838,7 @@ function createProgressChart(container, data, months) {
                             color: [
                                 [0.3, { color: '#FF5252', shadowColor: 'rgba(255, 82, 82, 0.3)', shadowBlur: 4 }],
                                 [0.7, { color: '#FFC107', shadowColor: 'rgba(255, 193, 7, 0.3)', shadowBlur: 4 }],
-                                [1, { color: '#4CAF50', shadowColor: 'rgba(76, 175, 80, 0.3)', shadowBlur: 4 }]
+                                [1, { color: '#65BDBA', shadowColor: 'rgba(76, 175, 80, 0.3)', shadowBlur: 4 }]
                             ]
                         }
                     },
@@ -775,7 +847,7 @@ function createProgressChart(container, data, months) {
                         length: '75%',
                         width: 6,
                         itemStyle: {
-                            color: '#2196F3',
+                            color: '#3C9BC9',
                             shadowColor: 'rgba(33, 150, 243, 0.5)',
                             shadowBlur: 4
                         }
@@ -815,7 +887,7 @@ function createProgressChart(container, data, months) {
                         formatter: '{value}分',
                         offsetCenter: [0, '-5%'],
                         fontSize: 24,
-                        color: '#2196F3',
+                        color: '#3C9BC9',
                         fontWeight: 'bold',
                         shadowColor: 'rgba(33, 150, 243, 0.3)',
                         shadowBlur: 4
@@ -862,8 +934,8 @@ function createProgressChart(container, data, months) {
                     left: 'center',
                     top: '85%',
                     style: {
-                        text: `📊 活动趋势: ${activityGrowth >= 0 ? '增长' : '下降'}`,
-                        fill: activityGrowth >= 0 ? '#4CAF50' : '#F44336',
+                        text: `活动趋势: ${activityGrowth >= 0 ? '增长' : '下降'}`,
+                        fill: activityGrowth >= 0 ? '#65BDBA' : '#FC757B',
                         fontSize: 13,
                         fontWeight: 'bold',
                         shadowColor: 'rgba(0,0,0,0.1)',
@@ -985,11 +1057,11 @@ function createErrorDisplay(chartName, errorMessage) {
     return `
         <div style="text-align:center;padding:30px;color:#666;">
             <div style="font-size:48px;margin-bottom:10px;">📊</div>
-            <h3 style="color:#F44336;margin-bottom:10px;">${chartName}加载失败</h3>
+            <h3 style="color:#FC757B;margin-bottom:10px;">${chartName}加载失败</h3>
             <p style="color:#999;font-size:12px;margin-bottom:15px;">${errorMessage}</p>
             <button onclick="location.reload()" style="
                 padding:8px 16px;
-                background:#4CAF50;
+                background:#65BDBA;
                 color:white;
                 border:none;
                 border-radius:4px;
@@ -1369,14 +1441,14 @@ function createDashboard(apiData) {
             dashboardContainer.innerHTML = `
                 <div style="text-align:center;padding:40px;color:#666;">
                     <div style="font-size:48px;margin-bottom:10px;">⚠️</div>
-                    <h3 style="color:#F44336;margin-bottom:15px;">数据转换失败</h3>
+                    <h3 style="color:#FC757B;margin-bottom:15px;">数据转换失败</h3>
                     <p style="color:#999;font-size:14px;margin-bottom:20px;">
                         ${dataError.message || '无法处理后端返回的数据'}
                     </p>
                     
                     <div style="background:#f5f5f5;padding:20px;border-radius:4px;text-align:left;margin-top:20px;">
                         <strong>实际收到的数据结构：</strong>
-                        <button onclick="toggleDataStructure()" style="margin-left:10px;padding:3px 8px;font-size:11px;background:#4CAF50;color:white;border:none;border-radius:3px;cursor:pointer;">
+                        <button onclick="toggleDataStructure()" style="margin-left:10px;padding:3px 8px;font-size:11px;background:#65BDBA;color:white;border:none;border-radius:3px;cursor:pointer;">
                             显示/隐藏
                         </button>
                         <pre id="data-structure" style="font-size:11px;margin-top:10px;display:none;max-height:300px;overflow:auto;">
@@ -1385,7 +1457,7 @@ ${JSON.stringify(apiData, null, 2)}
                     </div>
                     
                     <div style="margin-top:30px;">
-                        <button onclick="testWithSampleData()" style="padding:8px 16px;background:#2196F3;color:white;border:none;border-radius:4px;cursor:pointer;">
+                        <button onclick="testWithSampleData()" style="padding:8px 16px;background:#3C9BC9;color:white;border:none;border-radius:4px;cursor:pointer;">
                             使用测试数据查看效果
                         </button>
                     </div>
@@ -1483,11 +1555,11 @@ function showDataDebugInfo(apiData, isMock = false) {
                     // 标记活动数据
                     const isActivityField = key.toLowerCase().includes('activity') || 
                                           key.toLowerCase().includes('openrank');
-                    const activityIcon = isActivityField && isArray ? ' ✅' : '';
+                    const activityIcon = isActivityField && isArray ? '' : '';
                     
                     if (isActivityField && isArray) hasActivityData = true;
                     
-                    debugHTML += `<li><code style="color:${isActivityField ? '#4CAF50' : '#666'}">${key}</code>: `;
+                    debugHTML += `<li><code style="color:${isActivityField ? '#666' : '#666'}">${key}</code>: `;
                     debugHTML += `<span style="color:#999;">${isArray ? `数组(${length})` : '对象'}</span> `;
                     debugHTML += `<span>${sample}</span>${activityIcon}</li>`;
                 }
@@ -1522,7 +1594,7 @@ function showDataDebugInfo(apiData, isMock = false) {
             <div style="margin-top:10px;display:flex;gap:10px;">
                 <button onclick="toggleRawData()" style="
                     padding:5px 10px;
-                    background:#4CAF50;
+                    background:#65BDBA;
                     color:white;
                     border:none;
                     border-radius:3px;
@@ -1531,7 +1603,7 @@ function showDataDebugInfo(apiData, isMock = false) {
                 ">📋 查看原始数据</button>
                 <button onclick="copyDataToClipboard()" style="
                     padding:5px 10px;
-                    background:#2196F3;
+                    background:#3C9BC9;
                     color:white;
                     border:none;
                     border-radius:3px;
@@ -1648,7 +1720,7 @@ function enableButton() {
     if (analyzeBtn) {
         analyzeBtn.disabled = false;
         analyzeBtn.innerHTML = '分析';
-        analyzeBtn.style.backgroundColor = '#4CAF50';
+        analyzeBtn.style.backgroundColor = '#65BDBA';
     }
 }
 
@@ -1827,10 +1899,10 @@ function adaptBackendData(apiData) {
             rawValue: result.rawTrends[3],
             description: 'Issue和PR响应时间的变化（负值表示改善）',
             unit: '%',
-            format: (v) => v < 0 ? `改善 ${(Math.abs(v) * 100).toFixed(1)}%` : `变慢 ${(v * 100).toFixed(1)}%`,
+            format: (v) => v < 0 ? `-${(Math.abs(v) * 100).toFixed(1)}%` : ` ${(v * 100).toFixed(1)}%`,
             min: -1,
             max: 1,
-            isPositive: false // 负值表示改善
+            isPositive: false 
         },
         { // OpenRank趋势
             name: 'OpenRank趋势',
