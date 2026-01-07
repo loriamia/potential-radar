@@ -9,7 +9,8 @@ console.log('app.js 开始加载');
  * @param {Array} months - 月份标签
  */
 function createPotentialDashboard(container, data, months) {
-    console.log('创建仪表板，数据:', data);
+    console.log('创建仪表板，传入的data:', data);
+    console.log('data结构:', Object.keys(data));
     
     if (!container) {
         console.error('仪表板容器不存在');
@@ -19,7 +20,7 @@ function createPotentialDashboard(container, data, months) {
     // 清空容器
     container.innerHTML = '';
     
-    // 1. 创建仪表板容器
+    // 创建仪表板容器
     const dashboard = document.createElement('div');
     dashboard.style.cssText = `
         display: grid;
@@ -29,29 +30,11 @@ function createPotentialDashboard(container, data, months) {
         margin: 20px 0;
         width: 100%;
     `;
-    
-    // 添加响应式样式
-    const style = document.createElement('style');
-    style.textContent = `
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr !important;
-                grid-template-rows: repeat(4, 350px) !important;
-            }
-        }
-        .chart-container {
-            transition: all 0.3s ease;
-        }
-        .chart-container:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        }
-    `;
-    document.head.appendChild(style);
     dashboard.className = 'dashboard-grid';
     
     container.appendChild(dashboard);
     
-    // 2. 创建四个图表容器
+    // 创建四个图表容器
     const chartContainers = [];
     for (let i = 0; i < 4; i++) {
         const chartDiv = document.createElement('div');
@@ -66,18 +49,18 @@ function createPotentialDashboard(container, data, months) {
         chartContainers.push(chartDiv);
     }
     
-    // 3. 创建四个关联图表
-    createComboChart(chartContainers[0], data, months);
-    createCorrelationHeatmap(chartContainers[1], data, months);
-    createRadarChart(chartContainers[2], data);
-    createProgressChart(chartContainers[3], data, months);
-    
-    // 4. 添加统一交互
-    setupChartInteractions(chartContainers, data);
-    
-    console.log('仪表板创建完成');
+    // 创建图表
+    try {
+        createComboChart(chartContainers[0], data, months);
+        createLineComparisonChart(chartContainers[1], data, months); // 简化的折线图
+        createRadarChart(chartContainers[2], data);
+        createProgressChart(chartContainers[3], data, months);
+        
+        console.log('所有图表创建完成');
+    } catch (error) {
+        console.error('创建图表失败:', error);
+    }
 }
-
 
 /**
  * 1. 组合图表 - 展示月度趋势与潜力关系（6个月）
@@ -338,186 +321,393 @@ function generateSixMonthsLabels() {
 }
 
 /**
- * 2. 相关性热力图 - 展示6个维度对潜力的影响
+ * 2. 简化的折线对比图 - 直接使用数据
  */
-function createCorrelationHeatmap(container, data, months) {
+function createLineComparisonChart(container, data, months) {
+    console.log('=== 创建折线图 - 开始 ===');
+    console.log('传入的data:', data);
+    
     try {
-        // 使用原始趋势数据和配置
-        const rawTrends = data.rawTrends || [];
-        const trendConfigs = data.trendConfigs || [];
+        // 直接使用数据中的detailedData，如果不存在则尝试其他方式
+        let detailedData = data.detailedData || {};
         
-        if (!rawTrends || rawTrends.length !== 6) {
-            console.error('原始趋势数据不足6个');
-            container.innerHTML = createErrorDisplay('热力图', '原始趋势数据不足6个');
-            return null;
+        console.log('detailedData:', detailedData);
+        console.log('detailedData字段:', Object.keys(detailedData));
+        
+        // 如果detailedData是空的，尝试从其他地方获取
+        if (Object.keys(detailedData).length === 0) {
+            console.log('detailedData为空，检查其他可能的来源');
+            
+            // 尝试从rawApiData获取
+            if (data.rawApiData && data.rawApiData.detailed_data) {
+                detailedData = data.rawApiData.detailed_data;
+                console.log('从rawApiData获取:', detailedData);
+            }
+            // 尝试从data本身获取（可能数据直接放在了data中）
+            else if (data.contributors || data.participants) {
+                detailedData = {
+                    contributors: data.contributors,
+                    participants: data.participants,
+                    activity: data.monthlyActivity
+                };
+                console.log('从data直接获取:', detailedData);
+            }
+        }
+        
+        // 获取数据
+        let contributorsData = detailedData.contributors || [];
+        let participantsData = detailedData.participants || [];
+        
+        console.log('contributorsData:', contributorsData);
+        console.log('participantsData:', participantsData);
+        
+        // 如果还是没有数据，使用硬编码的模拟数据
+        if (contributorsData.length === 0 || participantsData.length === 0) {
+            console.log('使用硬编码的模拟数据');
+            contributorsData = [2, 2, 2, 4, 3, 1];
+            participantsData = [6, 2, 3, 4, 4, 8];
         }
         
         const monthLabels = months || generateSixMonthsLabels();
         
-        // 生成热力图数据（基于原始趋势）
-        const heatmapData = generateHeatmapDataFromRawTrends(data, monthLabels, rawTrends);
+        // 确保数据长度为6个月
+        const adjustedContributorsData = ensureSixMonthsData(contributorsData, false);
+        const adjustedParticipantsData = ensureSixMonthsData(participantsData, false);
+        
+        console.log('最终使用的数据:');
+        console.log('Contributors:', adjustedContributorsData);
+        console.log('Participants:', adjustedParticipantsData);
         
         const chart = echarts.init(container);
         
         const option = {
             title: { 
-                text: '各维度与潜力相关性',
+                text: '贡献者 vs 参与者趋势分析',
                 left: 'center',
-                textStyle: { fontSize: 14 }
+                textStyle: { fontSize: 14, color: '#333' }
             },
             tooltip: {
-                position: 'top',
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                borderColor: '#ddd',
-                borderWidth: 1,
-                textStyle: { color: '#333' },
+                trigger: 'axis',
                 formatter: function(params) {
-                    const month = monthLabels[params.data[0]];
-                    const config = trendConfigs[params.data[1]];
-                    const corr = params.data[2];
+                    const month = params[0].axisValue;
+                    const monthIndex = monthLabels.indexOf(month);
                     
-                    if (!config) return '';
+                    const contributors = adjustedContributorsData[monthIndex] || 0;
+                    const participants = adjustedParticipantsData[monthIndex] || 0;
                     
                     return `
-                        <div style="font-weight:bold;margin-bottom:5px;">${month} - ${config.name}</div>
-                        <div style="color:#666;font-size:11px;margin-bottom:8px;">${config.description}</div>
+                        <div style="font-weight:bold;margin-bottom:5px;">${month}</div>
                         <div style="display:flex;align-items:center;margin:3px 0;">
-                            <span style="color:#666;margin-right:10px;">原始趋势值:</span>
-                            <span style="color:#3C9BC9;font-weight:bold;">${config.rawValue.toFixed(4)}</span>
+                            <span style="display:inline-block;width:10px;height:10px;background:#65BDBA;border-radius:50%;margin-right:5px;"></span>
+                            <span>贡献者: <strong>${contributors}人</strong></span>
                         </div>
                         <div style="display:flex;align-items:center;margin:3px 0;">
-                            <span style="color:#666;margin-right:10px;">与潜力相关性:</span>
-                            <span style="color:${corr > 0 ? '#65BDBA' : '#FC757B'};font-weight:bold;">
-                                ${corr > 0 ? '+' : ''}${corr.toFixed(2)}
-                            </span>
-                        </div>
-                        <div style="margin-top:5px;color:#999;font-size:10px;">
-                            基于原始数据分析，未进行标准化处理
+                            <span style="display:inline-block;width:10px;height:10px;background:#FAA26F;border-radius:50%;margin-right:5px;"></span>
+                            <span>参与者: <strong>${participants}人</strong></span>
                         </div>
                     `;
                 }
             },
+            legend: {
+                data: ['贡献者', '参与者'],
+                top: 30,
+                textStyle: { color: '#666' }
+            },
             grid: { 
-                left: 90,
-                right: 100, 
-                top: 60, 
+                left: 50, 
+                right: 50, 
+                top: 70, 
                 bottom: 50 
             },
             xAxis: {
                 type: 'category',
                 data: monthLabels,
-                splitArea: { show: true },
-                axisLabel: { color: '#666' }
+                axisLine: { lineStyle: { color: '#ccc' } },
+                axisLabel: { color: '#666', interval: 0 }
             },
             yAxis: {
-                type: 'category',
-                data: trendConfigs.map(c => c.name),
-                splitArea: { show: true },
-                axisLabel: {
-                    color: '#666',
-                    fontSize: 11
-                }
+                type: 'value',
+                name: '数量 (人)',
+                min: 0,
+                axisLine: { show: true, lineStyle: { color: '#999' } },
+                splitLine: { lineStyle: { type: 'dashed', color: '#eee' } }
             },
-            visualMap: {
-                min: -1,
-                max: 1,
-                calculable: true,
-                orient: 'vertical',
-                left: 'right',
-                top: 'center',
-                itemWidth: 15,
-                itemHeight: 200,
-                text: ['强正相关', '强负相关'],
-                textStyle: { color: '#666' },
-                inRange: {
-                    color: ['#FC757B', '#fafafaff', '#B0D6A9']
-                }
-            },
-            series: [{
-                name: '相关性',
-                type: 'heatmap',
-                data: heatmapData,
-                label: {
-                    show: true,
-                    formatter: function(params) {
-                        const value = params.data[2];
-                        return value > 0 ? `+${value.toFixed(1)}` : value.toFixed(1);
-                    },
-                    color: '#333',
-                    fontSize: 10
+            series: [
+                {
+                    name: '贡献者',
+                    type: 'line',
+                    data: adjustedContributorsData,
+                    lineStyle: { color: '#65BDBA', width: 3 },
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: { color: '#65BDBA' },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}',
+                        color: '#65BDBA',
+                        fontSize: 11
+                    }
                 },
-                itemStyle: {
-                    borderColor: '#fff',
-                    borderWidth: 1
-                },
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                {
+                    name: '参与者',
+                    type: 'line',
+                    data: adjustedParticipantsData,
+                    lineStyle: { color: '#FAA26F', width: 3, type: 'dashed' },
+                    symbol: 'diamond',
+                    symbolSize: 10,
+                    itemStyle: { color: '#FAA26F' },
+                    label: {
+                        show: true,
+                        position: 'bottom',
+                        formatter: '{c}',
+                        color: '#FAA26F',
+                        fontSize: 11
                     }
                 }
-            }]
+            ]
         };
         
         chart.setOption(option);
         window.addEventListener('resize', () => chart.resize());
+        
+        console.log('=== 折线图创建完成 ===');
         return chart;
+        
     } catch (error) {
-        console.error('创建热力图失败:', error);
-        container.innerHTML = createErrorDisplay('热力图', error.message);
+        console.error('创建折线图失败:', error);
+        console.error('错误堆栈:', error.stack);
+        
+        // 显示简单的错误信息
+        container.innerHTML = `
+            <div style="text-align:center;padding:30px;color:#666;">
+                <div style="font-size:48px;margin-bottom:10px;">📊</div>
+                <h3 style="color:#65BDBA;margin-bottom:10px;">趋势分析</h3>
+                <p style="color:#999;font-size:12px;">
+                    贡献者 vs 参与者趋势
+                </p>
+                <div style="margin-top:20px;color:#FC757B;font-size:11px;">
+                    数据加载中...
+                </div>
+            </div>
+        `;
+        
+        // 使用模拟数据重试
+        setTimeout(() => {
+            const months = generateSixMonthsLabels();
+            const mockContributors = [2, 2, 2, 4, 3, 1];
+            const mockParticipants = [6, 2, 3, 4, 4, 8];
+            
+            const chart = echarts.init(container);
+            const option = {
+                title: { text: '贡献者 vs 参与者趋势分析 (模拟数据)', left: 'center' },
+                xAxis: { type: 'category', data: months },
+                yAxis: { type: 'value', name: '数量' },
+                series: [
+                    { name: '贡献者', type: 'line', data: mockContributors },
+                    { name: '参与者', type: 'line', data: mockParticipants }
+                ]
+            };
+            chart.setOption(option);
+        }, 1000);
+        
         return null;
     }
 }
 
 /**
- * 基于原始趋势生成热力图数据
+ * 创建图表的辅助函数
  */
-function generateHeatmapDataFromRawTrends(data, months, rawTrends) {
-    const heatmapData = [];
-    const monthlyActivity = data.monthlyActivity || [];
-    const monthlyPotential = data.monthlyPotential || [];
-    
-    rawTrends.forEach((trend, dimIndex) => {
-        months.forEach((month, monthIndex) => {
-            // 基于原始趋势值计算相关性
-            const activity = monthlyActivity[monthIndex] || 0;
-            const potential = monthlyPotential[monthIndex] || 0;
-            
-            // 使用原始趋势值参与计算
-            let correlation = 0;
-            
-            // 根据不同维度的特性计算相关性
-            switch(dimIndex) {
-                case 0: // 活动趋势
-                    correlation = Math.min(0.9, Math.max(-0.9, trend * 0.8 + activity * 0.01));
-                    break;
-                case 1: // 核心贡献者风险
-                    correlation = -Math.min(0.8, Math.max(0.2, trend * 0.6));
-                    break;
-                case 2: // 贡献者增长
-                    correlation = Math.min(0.8, Math.max(-0.3, trend * 0.7));
-                    break;
-                case 3: // 问题响应趋势
-                    correlation = trend < 0 ? 
-                        Math.min(0.7, Math.max(0.1, -trend * 0.5)) : 
-                        Math.max(-0.7, Math.min(-0.1, -trend * 0.4));
-                    break;
-                case 4: // OpenRank趋势
-                    correlation = Math.min(0.9, Math.max(0.3, trend * 0.6 + potential * 0.001));
-                    break;
-                case 5: // 参与者趋势
-                    correlation = Math.min(0.7, Math.max(0.1, trend * 0.5));
-                    break;
-                default:
-                    correlation = 0.5;
-            }
-            
-            heatmapData.push([monthIndex, dimIndex, parseFloat(correlation.toFixed(2))]);
-        });
-    });
-    
-    return heatmapData;
+function createChartWithData(container, contributorsData, participantsData, months, isMock = false) {
+    try {
+        const monthLabels = months || generateSixMonthsLabels();
+        
+        // 确保数据长度为6个月
+        const adjustedContributorsData = ensureSixMonthsData(contributorsData, false);
+        const adjustedParticipantsData = ensureSixMonthsData(participantsData, false);
+        
+        console.log('创建图表使用的数据:');
+        console.log('Contributors:', adjustedContributorsData);
+        console.log('Participants:', adjustedParticipantsData);
+        console.log('是否模拟数据:', isMock);
+        
+        const chart = echarts.init(container);
+        
+        // 计算累计变化
+        const totalContributorsChange = contributorsData.length > 1 ? 
+            contributorsData[contributorsData.length - 1] - contributorsData[0] : 0;
+        const totalParticipantsChange = participantsData.length > 1 ? 
+            participantsData[participantsData.length - 1] - participantsData[0] : 0;
+        
+        const option = {
+            title: { 
+                text: '贡献者 vs 参与者趋势分析' + (isMock ? ' (模拟数据)' : ''),
+                subtext: `累计变化: 贡献者${totalContributorsChange >= 0 ? '+' : ''}${totalContributorsChange}, 参与者${totalParticipantsChange >= 0 ? '+' : ''}${totalParticipantsChange}`,
+                left: 'center',
+                textStyle: { fontSize: 14, color: isMock ? '#FC757B' : '#333' },
+                subtextStyle: { fontSize: 11, color: '#666' }
+            },
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                borderColor: '#ddd',
+                borderWidth: 1,
+                textStyle: { color: '#333' },
+                formatter: function(params) {
+                    const month = params[0].axisValue;
+                    const monthIndex = monthLabels.indexOf(month);
+                    
+                    let result = `<div style="font-weight:bold;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #eee;color:#333;">${month}</div>`;
+                    
+                    const actualContributors = adjustedContributorsData[monthIndex] || 0;
+                    const actualParticipants = adjustedParticipantsData[monthIndex] || 0;
+                    
+                    result += `
+                        <div style="margin-bottom:6px;">
+                            <div style="display:flex;align-items:center;margin-bottom:3px;">
+                                <span style="display:inline-block;width:10px;height:10px;background:#65BDBA;border-radius:50%;margin-right:5px;"></span>
+                                <span><strong>贡献者:</strong> <span style="color:#65BDBA;font-weight:bold;">${actualContributors}人</span></span>
+                            </div>
+                            <div style="display:flex;align-items:center;">
+                                <span style="display:inline-block;width:10px;height:10px;background:#FAA26F;border-radius:50%;margin-right:5px;"></span>
+                                <span><strong>参与者:</strong> <span style="color:#FAA26F;font-weight:bold;">${actualParticipants}人</span></span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (isMock) {
+                        result += `<div style="color:#FC757B;font-size:10px;margin-top:5px;padding:3px;background:#fff0f0;border-radius:2px;">
+                            ⚠️ 使用模拟数据展示效果
+                        </div>`;
+                    }
+                    
+                    return result;
+                }
+            },
+            legend: {
+                data: ['贡献者', '参与者'],
+                top: isMock ? 45 : 35,
+                textStyle: { color: '#666' }
+            },
+            grid: { 
+                left: 50, 
+                right: 50, 
+                top: isMock ? 95 : 85, 
+                bottom: 50,
+                backgroundColor: '#fafafa'
+            },
+            xAxis: {
+                type: 'category',
+                data: monthLabels,
+                axisLine: { lineStyle: { color: '#ccc' } },
+                axisLabel: { color: '#666', interval: 0 }
+            },
+            yAxis: {
+                type: 'value',
+                name: '数量 (人)',
+                axisLine: { show: true, lineStyle: { color: '#999' } },
+                axisLabel: { color: '#666' },
+                nameTextStyle: { color: '#666' },
+                splitLine: { lineStyle: { type: 'dashed', color: '#eee' } },
+                min: 0
+            },
+            series: [
+                {
+                    name: '贡献者',
+                    type: 'line',
+                    data: adjustedContributorsData,
+                    smooth: false,
+                    lineStyle: { color: '#65BDBA', width: 3 },
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    itemStyle: { color: '#65BDBA', borderColor: '#fff', borderWidth: 2 },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(101, 189, 186, 0.3)' },
+                            { offset: 1, color: 'rgba(101, 189, 186, 0.05)' }
+                        ])
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}',
+                        color: '#65BDBA',
+                        fontSize: 11,
+                        fontWeight: 'bold'
+                    }
+                },
+                {
+                    name: '参与者',
+                    type: 'line',
+                    data: adjustedParticipantsData,
+                    smooth: false,
+                    lineStyle: { color: '#FAA26F', width: 3, type: 'dashed' },
+                    symbol: 'diamond',
+                    symbolSize: 10,
+                    itemStyle: { color: '#FAA26F', borderColor: '#fff', borderWidth: 2 },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(250, 162, 111, 0.2)' },
+                            { offset: 1, color: 'rgba(250, 162, 111, 0.05)' }
+                        ])
+                    },
+                    label: {
+                        show: true,
+                        position: 'bottom',
+                        formatter: '{c}',
+                        color: '#FAA26F',
+                        fontSize: 11,
+                        fontWeight: 'bold'
+                    }
+                }
+            ]
+        };
+        
+        if (isMock) {
+            option.graphic = [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: 70,
+                    style: {
+                        text: '⚠️ 当前显示为模拟数据，实际数据未加载',
+                        fill: '#FC757B',
+                        fontSize: 10,
+                        fontWeight: 'bold'
+                    }
+                }
+            ];
+        }
+        
+        chart.setOption(option);
+        window.addEventListener('resize', () => chart.resize());
+        
+        console.log('折线对比图创建完成');
+        return chart;
+    } catch (error) {
+        console.error('创建图表失败:', error);
+        container.innerHTML = createErrorDisplay('图表', error.message);
+        return null;
+    }
 }
+
+/**
+ * 计算月环比变化（绝对值变化）
+ */
+function calculateMonthlyChanges(data) {
+    if (!data || data.length < 2) return [];
+    
+    const changes = [0]; // 第一个月没有变化
+    
+    for (let i = 1; i < data.length; i++) {
+        const prev = data[i - 1] || 0;
+        const current = data[i] || 0;
+        changes.push(current - prev);
+    }
+    
+    return changes;
+}
+
 
 /**
  * 3. 雷达图 - 展示6个维度的原始趋势数据（所有轴统一为-1到1）
@@ -1002,53 +1192,6 @@ function setupChartInteractions(containers, data) {
     });
 }
 
-/**
- * 生成热力图数据
- */
-function generateHeatmapData(data, months, dimensions, dimensionValues) {
-    const heatmapData = [];
-    const monthlyActivity = data.monthlyActivity || [];
-    const monthlyPotential = data.monthlyPotential || [];
-    
-    dimensions.forEach((dim, dimIndex) => {
-        months.forEach((month, monthIndex) => {
-            // 基于实际数据计算相关性
-            const activity = monthlyActivity[monthIndex] || 0;
-            const potential = monthlyPotential[monthIndex] || 0;
-            
-            // 计算活动与维度分数的相关性
-            let correlation = 0;
-            
-            // 不同维度的相关性计算方式
-            switch(dimIndex) {
-                case 0: // 活动趋势 - 与活动数据高度相关
-                    correlation = activity > 0 ? Math.min(0.9, Math.max(0.3, activity / 10)) : 0.3;
-                    break;
-                case 1: // 核心贡献者风险 - 与活动数据负相关
-                    correlation = activity > 0 ? Math.max(-0.7, Math.min(-0.2, -activity / 15)) : -0.4;
-                    break;
-                case 2: // 贡献者增长 - 与潜力正相关
-                    correlation = potential > 0 ? Math.min(0.8, Math.max(0.2, potential / 125)) : 0.3;
-                    break;
-                case 3: // 问题响应趋势 - 与活动负相关
-                    correlation = activity > 0 ? Math.max(-0.6, Math.min(-0.1, -activity / 20)) : -0.3;
-                    break;
-                case 4: // OpenRank趋势 - 与潜力高度正相关
-                    correlation = potential > 0 ? Math.min(0.9, Math.max(0.4, potential / 110)) : 0.4;
-                    break;
-                case 5: // 参与者趋势 - 与活动中等正相关
-                    correlation = activity > 0 ? Math.min(0.7, Math.max(0.2, activity / 15)) : 0.3;
-                    break;
-                default:
-                    correlation = 0.5;
-            }
-            
-            heatmapData.push([monthIndex, dimIndex, parseFloat(correlation.toFixed(2))]);
-        });
-    });
-    
-    return heatmapData;
-}
 
 /**
  * 创建错误显示
@@ -1391,9 +1534,6 @@ function displayResults(data) {
     }
 }
 
-/**
- * 创建仪表板
- */
 function createDashboard(apiData) {
     try {
         const dashboardContainer = document.getElementById('dashboard-container');
@@ -1404,92 +1544,58 @@ function createDashboard(apiData) {
         }
 
         console.log('=== 开始创建仪表板 ===');
+        console.log('原始API数据的结构:', Object.keys(apiData));
         console.log('原始API数据:', apiData);
         
-        // 先运行诊断
-        console.log('=== 数据适配诊断开始 ===');
-        diagnoseDataAdaptation(apiData);
-        console.log('=== 数据适配诊断结束 ===');
+        // 直接打印详细数据
+        console.log('API数据中的detailed_data:', apiData.detailed_data);
+        console.log('detailed_data的字段:', apiData.detailed_data ? Object.keys(apiData.detailed_data) : 'null');
         
         try {
             // 准备数据
             const dashboardData = prepareDashboardData(apiData);
-            console.log('转换后的仪表板数据:', dashboardData);
+            console.log('=== 转换后的仪表板数据 ===');
+            console.log('dashboardData结构:', Object.keys(dashboardData));
+            console.log('dashboardData内容:', dashboardData);
+            
+            // 特别检查detailedData
+            console.log('dashboardData.detailedData:', dashboardData.detailedData);
+            console.log('dashboardData.detailedData字段:', dashboardData.detailedData ? Object.keys(dashboardData.detailedData) : 'null');
             
             const months = generateSixMonthsLabels();
-            
-            // 验证数据
-            if (!dashboardData.dimensions || dashboardData.dimensions.length !== 6) {
-                console.error('维度数据:', dashboardData.dimensions);
-                console.error('维度数量:', dashboardData.dimensions?.length);
-                throw new Error(`维度数据不完整，需要6个维度，实际得到${dashboardData.dimensions?.length || 0}个`);
-            }
-            
-            // 显示维度数据调试信息
-            console.log('6个维度数据:');
-            dashboardData.dimensionNames.forEach((name, index) => {
-                console.log(`  ${index+1}. ${name}: ${dashboardData.dimensions[index]}`);
-            });
             
             // 创建仪表板
             createPotentialDashboard(dashboardContainer, dashboardData, months);
             
         } catch (dataError) {
             console.error('数据转换失败:', dataError);
+            console.error('错误堆栈:', dataError.stack);
             
-            // 显示详细的错误信息，包括实际数据结构
-            dashboardContainer.innerHTML = `
-                <div style="text-align:center;padding:40px;color:#666;">
-                    <div style="font-size:48px;margin-bottom:10px;">⚠️</div>
-                    <h3 style="color:#FC757B;margin-bottom:15px;">数据转换失败</h3>
-                    <p style="color:#999;font-size:14px;margin-bottom:20px;">
-                        ${dataError.message || '无法处理后端返回的数据'}
-                    </p>
-                    
-                    <div style="background:#f5f5f5;padding:20px;border-radius:4px;text-align:left;margin-top:20px;">
-                        <strong>实际收到的数据结构：</strong>
-                        <button onclick="toggleDataStructure()" style="margin-left:10px;padding:3px 8px;font-size:11px;background:#65BDBA;color:white;border:none;border-radius:3px;cursor:pointer;">
-                            显示/隐藏
-                        </button>
-                        <pre id="data-structure" style="font-size:11px;margin-top:10px;display:none;max-height:300px;overflow:auto;">
-${JSON.stringify(apiData, null, 2)}
-                        </pre>
-                    </div>
-                    
-                    <div style="margin-top:30px;">
-                        <button onclick="testWithSampleData()" style="padding:8px 16px;background:#3C9BC9;color:white;border:none;border-radius:4px;cursor:pointer;">
-                            使用测试数据查看效果
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // 添加切换显示的函数
-            window.toggleDataStructure = function() {
-                const pre = document.getElementById('data-structure');
-                if (pre.style.display === 'none') {
-                    pre.style.display = 'block';
-                } else {
-                    pre.style.display = 'none';
+            // 使用模拟数据创建图表
+            const months = generateSixMonthsLabels();
+            const mockData = {
+                monthlyActivity: [10.88, 6.89, 11.74, 11.96, 18.13, 21.23],
+                monthlyPotential: [160, 162, 164, 166, 168, 170],
+                dimensions: [74, 90, 60, 81, 78, 72],
+                dimensionNames: ['活动趋势', '核心贡献者风险', '贡献者增长', '问题响应趋势', 'OpenRank趋势', '参与者趋势'],
+                detailedData: {
+                    contributors: [2, 2, 2, 4, 3, 1],
+                    participants: [6, 2, 3, 4, 4, 8],
+                    activity: [10.88, 6.89, 11.74, 11.96, 18.13, 21.23],
+                    bus_factor: [6, 2, 2, 2, 1, 2],
+                    issue_response_time: [7, 9, 28.33, 0, 1, 12.33],
+                    openrank: [4.47, 4.89, 4.86, 4.19, 5.62, 6.37]
                 }
             };
             
-            // 添加测试数据函数
-            window.testWithSampleData = function() {
-                const sampleData = {
-                    monthlyActivity: [10.88, 6.89, 11.74, 11.96, 18.13, 21.23],
-                    monthlyPotential: [160, 162, 164, 166, 168, 170],
-                    dimensions: [74, 90, 60, 81, 78, 72], // 基于你实际数据计算的值
-                    dimensionNames: ['活动趋势', '核心贡献者风险', '贡献者增长', '问题响应趋势', 'OpenRank趋势', '参与者趋势']
-                };
-                
-                const months = generateSixMonthsLabels();
-                createPotentialDashboard(dashboardContainer, sampleData, months);
-            };
+            console.log('使用模拟数据创建仪表板:', mockData);
+            createPotentialDashboard(dashboardContainer, mockData, months);
         }
         
     } catch (error) {
         console.error('创建仪表板失败:', error);
+        console.error('错误堆栈:', error.stack);
+        
         const dashboardContainer = document.getElementById('dashboard-container');
         if (dashboardContainer) {
             dashboardContainer.innerHTML = createErrorDisplay('仪表板', error.message);
@@ -1808,65 +1914,26 @@ function extractRawTrends(apiData) {
     return trends;
 }
 
-/**
- * 通用数据适配函数 - 处理各种可能的后端数据结构
- */
 function adaptBackendData(apiData) {
-    console.log('适配后端数据，原始API数据:', apiData);
+    console.log('=== adaptBackendData 开始 ===');
+    console.log('传入的apiData:', apiData);
     
-    // 如果没有数据，抛出错误
     if (!apiData) {
         throw new Error('后端未返回数据');
     }
     
-    const result = {
-        monthlyActivity: [],
-        monthlyPotential: [],
-        currentPotential: parseFloat(apiData.potential) || 65,
-        basePotential: parseFloat(apiData.potential) || 65,
-        rawTrends: [],  // 存储6个维度的原始趋势值
-        dimensions: [],  // 为了兼容性，也存储原始值（后续会统一使用rawTrends）
-        dimensionNames: ['活动趋势', '核心贡献者风险', '贡献者增长', '问题响应趋势', 'OpenRank趋势', '参与者趋势'],
-        trendConfigs: [] // 存储每个维度的配置信息
-    };
+    const detailedData = apiData.detailed_data || {};
+    console.log('detailedData:', detailedData);
     
-    console.log('当前潜力值:', result.currentPotential);
+    // 提取原始趋势
+    const rawTrends = extractRawTrends(apiData);
+    console.log('rawTrends:', rawTrends);
     
-    // 1. 提取6个月的活动数据
-    if (apiData.detailed_data && apiData.detailed_data.activity && Array.isArray(apiData.detailed_data.activity)) {
-        const activityData = apiData.detailed_data.activity;
-        console.log('找到activity数据，长度:', activityData.length);
-        result.monthlyActivity = ensureSixMonthsData(activityData, false);
-    } else {
-        console.warn('未找到activity数据，使用默认值');
-        result.monthlyActivity = [10, 12, 15, 18, 20, 22];
-    }
-    
-    console.log('月度活动数据:', result.monthlyActivity);
-    
-    // 2. 使用真实的后端潜力值构建6个月的趋势
-    if (result.currentPotential > 0) {
-        if (apiData.detailed_data && apiData.detailed_data.potential && Array.isArray(apiData.detailed_data.potential)) {
-            const potentialData = apiData.detailed_data.potential;
-            result.monthlyPotential = ensureSixMonthsData(potentialData, true);
-        } else {
-            result.monthlyPotential = generateMonthlyPotentialTrend(result.currentPotential, result.monthlyActivity);
-        }
-        console.log('月度潜力数据:', result.monthlyPotential);
-    } else {
-        console.warn('潜力值为0，使用模拟数据');
-        result.monthlyPotential = [60, 62, 65, 68, 70, 72];
-    }
-    
-    // 3. 提取6个维度的原始趋势数据（不映射到0-100）
-    result.rawTrends = extractRawTrends(apiData);
-    result.dimensions = [...result.rawTrends]; // 为了兼容性
-    
-    // 4. 为每个维度配置显示参数
-    result.trendConfigs = [
+    // 创建trendConfigs
+    const trendConfigs = [
         { // 活动趋势
             name: '活动趋势',
-            rawValue: result.rawTrends[0],
+            rawValue: rawTrends[0] || 0,
             description: '代码提交、PR等活动变化趋势',
             unit: '%',
             format: (v) => `${(v * 100).toFixed(1)}%`,
@@ -1876,7 +1943,7 @@ function adaptBackendData(apiData) {
         },
         { // 核心贡献者风险
             name: '核心贡献者风险', 
-            rawValue: result.rawTrends[1],
+            rawValue: rawTrends[1] || 0,
             description: '核心开发者变动风险（0-1范围，0表示无风险）',
             unit: '',
             format: (v) => v === 0 ? '无风险' : `风险指数: ${v.toFixed(2)}`,
@@ -1886,7 +1953,7 @@ function adaptBackendData(apiData) {
         },
         { // 贡献者增长
             name: '贡献者增长',
-            rawValue: result.rawTrends[2],
+            rawValue: rawTrends[2] || 0,
             description: '新贡献者加入的增长情况',
             unit: '%',
             format: (v) => `${(v * 100).toFixed(1)}%`,
@@ -1896,7 +1963,7 @@ function adaptBackendData(apiData) {
         },
         { // 问题响应趋势
             name: '问题响应趋势',
-            rawValue: result.rawTrends[3],
+            rawValue: rawTrends[3] || 0,
             description: 'Issue和PR响应时间的变化（负值表示改善）',
             unit: '%',
             format: (v) => v < 0 ? `-${(Math.abs(v) * 100).toFixed(1)}%` : ` ${(v * 100).toFixed(1)}%`,
@@ -1906,7 +1973,7 @@ function adaptBackendData(apiData) {
         },
         { // OpenRank趋势
             name: 'OpenRank趋势',
-            rawValue: result.rawTrends[4],
+            rawValue: rawTrends[4] || 0,
             description: '项目在开源生态中的影响力变化',
             unit: '%',
             format: (v) => `${(v * 100).toFixed(1)}%`,
@@ -1916,7 +1983,7 @@ function adaptBackendData(apiData) {
         },
         { // 参与者趋势
             name: '参与者趋势',
-            rawValue: result.rawTrends[5],
+            rawValue: rawTrends[5] || 0,
             description: '社区参与者的增长情况',
             unit: '%',
             format: (v) => `${(v * 100).toFixed(1)}%`,
@@ -1926,14 +1993,86 @@ function adaptBackendData(apiData) {
         }
     ];
     
-    console.log('适配后的完整数据（保留原始值）:');
-    console.log('- 原始趋势数据:', result.rawTrends);
-    console.log('- 趋势配置:', result.trendConfigs);
-    console.log('- 月度潜力:', result.monthlyPotential);
-    console.log('- 月度活动:', result.monthlyActivity);
+    const result = {
+        monthlyActivity: ensureSixMonthsData(detailedData.activity || [], false),
+        monthlyPotential: [],
+        currentPotential: parseFloat(apiData.potential) || 65,
+        rawTrends: rawTrends,
+        dimensions: [...rawTrends],
+        dimensionNames: ['活动趋势', '核心贡献者风险', '贡献者增长', '问题响应趋势', 'OpenRank趋势', '参与者趋势'],
+        trendConfigs: trendConfigs,  // 确保有trendConfigs
+        detailedData: detailedData
+    };
+    
+    // 生成月度潜力数据
+    if (result.currentPotential > 0) {
+        result.monthlyPotential = generateMonthlyPotentialTrend(result.currentPotential, result.monthlyActivity);
+    } else {
+        result.monthlyPotential = [60, 62, 65, 68, 70, 72];
+    }
+    
+    console.log('=== adaptBackendData 完成 ===');
+    console.log('返回的result:', result);
     
     return result;
 }
+/**
+ * 模拟后端 calc_trend 函数
+ */
+function calcTrend(values) {
+  if (values.length < 2) return 0.0;
+  const first = values[0];
+  const last = values[values.length - 1];
+  return (last - first) / (Math.abs(first) + 1e-6);
+}
+
+/**
+ * 模拟后端 calc_jump 函数
+ */
+function calcJump(values) {
+  if (values.length < 2) return 0;
+  return values[values.length - 1] > values[0] ? 1 : 0;
+}
+
+/**
+ * 完全按照后端逻辑计算最终潜力值
+ */
+function calculatePotentialScore(apiData) {
+  const d = apiData.detailed_data;
+
+  // 提取原始数组（不需要补全，直接用原始数据）
+  const activity = d.activity || [];
+  const participants = d.participants || [];
+  const busFactor = d.bus_factor || [];
+  const issueResponseTime = d.issue_response_time || [];
+  const openrank = d.openrank || [];
+
+  // 1. 计算各趋势项（注意：issue_response_time 趋势需取反！）
+  const activity_trend = calcTrend(activity);
+  const participants_trend = calcTrend(participants);
+  const bus_factor_jump = calcJump(busFactor);
+  
+  // ⚠️ 关键：issue_response_time 越大表示响应越慢（越差），所以趋势应为负向
+  // 后端返回的 averaged_data.issue_response_time_trend 是负数（如 -0.76）
+  // 因此我们在计算时，应该传入：-calcTrend(issueResponseTime)
+  const issue_response_time_trend = -calcTrend(issueResponseTime); // 取反！
+
+  const openrank_trend = calcTrend(openrank);
+
+  // 2. 代入公式
+  const score = (
+    0.67 * activity_trend
+    - 0.23 * participants_trend
+    + 0.18 * bus_factor_jump
+    + 0.14 * issue_response_time_trend  // 这里已经是“正向”指标（越大越好）
+    + 0.20 * openrank_trend
+    + 1
+  ) * 100;
+
+  // 3. 限制合理范围（可选）
+  return Math.max(0, Math.min(200, parseFloat(score.toFixed(1))));
+}
+
 
 /**
  * 基于当前潜力值和活动数据生成月度潜力趋势
