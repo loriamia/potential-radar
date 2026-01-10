@@ -94,7 +94,7 @@
 
                 // 显示结果
                 repoNameEl.textContent = data.repo;
-                potentialEl.textContent = data.potential;
+                potentialEl.textContent = data.potential[5];
                 averagedDataEl.textContent = JSON.stringify(data.averaged_data, null, 2);
                 detailedDataEl.textContent = JSON.stringify(data.detailed_data, null, 2);
                 resultContainer.style.display = 'block';

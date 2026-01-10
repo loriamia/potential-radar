@@ -5,7 +5,6 @@ import qwen_api
 
 app = Flask(__name__)
 
-# ✅ 允许所有来源（开发阶段最省事）
 CORS(
     app,
     resources={r"/*": {"origins": "*"}},
@@ -30,7 +29,7 @@ def analyze():
 
         return jsonify({
             "repo": repo,
-            "potential": round(float(potential), 4),
+            "potential": potential,
             "averaged_data": averaged_data,   # ✅ 前端使用这个名字
             "detailed_data": detailed_data
         })

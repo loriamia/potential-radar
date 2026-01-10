@@ -4,7 +4,7 @@ import urllib.request
 import gzip
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import numpy as np
+from config import POTENTIAL_WEIGHTS, METRICS
 
 # =========================
 # 配置
@@ -15,24 +15,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0"
 }
 
-# 使用你已经验证过的 Model B 权重（标准化特征）
-POTENTIAL_WEIGHTS = {
-    "activity_trend": 0.6717,
-    "participants_trend": -0.2348,
-    "bus_factor_jump": 0.1755,
-    "issue_response_time_trend": 0.1356,
-    "contributors_jump": 0.0100,
-    "openrank_trend": 0.2
-}
-
-METRICS = [
-    "activity",
-    "participants",
-    "contributors",
-    "bus_factor",
-    "issue_response_time",
-    "openrank"
-]
 
 # =========================
 # 工具函数
@@ -86,6 +68,33 @@ def calc_jump(values):
     return int(values[-1] > values[0])
 
 
+# 新增：按切片计算单轮趋势数据
+def calculate_trending_data_by_slice(detailed_data, slice_len):
+    """
+    根据切片长度计算趋势数据
+    :param detailed_data: 原始详细指标数据
+    :param slice_len: 切片长度（取前slice_len个数据）
+    :return: 该切片对应的趋势数据
+    """
+    trending_data = {
+        "activity_trend": calc_trend(detailed_data["activity"][:slice_len]),
+        "participants_trend": calc_trend(detailed_data["participants"][:slice_len]),
+        "contributors_jump": calc_jump(detailed_data["contributors"][:slice_len]),
+        "bus_factor_jump": calc_jump(detailed_data["bus_factor"][:slice_len]),
+        "issue_response_time_trend": -calc_trend(detailed_data["issue_response_time"][:slice_len]),
+        "openrank_trend": calc_trend(detailed_data["openrank"][:slice_len])
+    }
+    return trending_data
+
+# 新增：计算单轮潜力值
+def calculate_single_potential(trending_data):
+    """计算单个切片对应的潜力值"""
+    potential = 0.0
+    for k, w in POTENTIAL_WEIGHTS.items():
+        potential += w * trending_data.get(k, 0.0)
+    potential = (round(float(potential), 4) + 1) * 100
+    return potential
+
 # =========================
 # 核心对外函数
 # =========================
@@ -108,10 +117,24 @@ def compute_repo_potential(repo: str):
     }
 
     # 潜力值（线性模型）
-    potential = 0.0
-    for k, w in POTENTIAL_WEIGHTS.items():
-        potential += w * trending_data.get(k, 0.0)
+    # potential = 0.0
+    # for k, w in POTENTIAL_WEIGHTS.items():
+    #     potential += w * trending_data.get(k, 0.0)
 
-    potential = (round(float(potential), 4) + 1) * 100
+        # 初始化潜力值数组，第一个元素为null
+    potential_array = [None]
+    # 获取数据长度（默认6个月）
+    data_length = len(months)
+    
+    # 从第二个元素开始计算（切片长度从2到data_length）
+    for slice_len in range(2, data_length + 1):
+        # 计算当前切片的趋势数据
+        trending_data = calculate_trending_data_by_slice(detailed_data, slice_len)
+        # 计算当前切片对应的潜力值
+        single_potential = calculate_single_potential(trending_data)
+        # 加入潜力值数组
+        potential_array.append(single_potential)
 
-    return detailed_data, trending_data, potential
+    # potential = (round(float(potential), 4) + 1) * 100
+
+    return detailed_data, trending_data, potential_array

@@ -2,17 +2,14 @@
 import os
 from datetime import datetime, timedelta
 
-# GitHub Trending 地址  
-GITHUB_SEARCH_API = "https://api.github.com/search/repositories"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-
+# GitHub Trending 地址 
 OPENDIGGER_API_URL = "https://oss.x-lab.info/open_digger/github/metrics/activity"
 
 # 自动计算【最近3个月】时间范围，无需手动修改
-# end_date = datetime.now().strftime("%Y-%m-%d")
-# start_date = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d")
-end_date = "2025-12-29"
-start_date = "2025-09-29"
+end_date = datetime.now().strftime("%Y-%m-%d")
+start_date = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d")
+# end_date = "2025-12-29"
+# start_date = "2025-09-29"
 TIME_RANGE = f"{start_date},{end_date}"
 
 # 请求头，防爬+模拟浏览器 (补全配置，防止被拦截)
@@ -25,15 +22,29 @@ HEADERS = {
     "Cache-Control": "no-cache"
 }
 
-if GITHUB_TOKEN:
-    HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
-
 # 超时时间
 REQUEST_TIMEOUT = 20
 
 # 延迟时间
 REQUEST_DELAY = 1
 
-# 结果保存路径
-RESULT_SAVE_PATH = "./repo_activity_result.json"
+POTENTIAL_WEIGHTS = {
+    "activity_trend": 0.6717,
+    "participants_trend": -0.2348,
+    "bus_factor_jump": 0.1755,
+    "issue_response_time_trend": 0.1356,
+    "contributors_jump": 0.0100,
+    "openrank_trend": 0.2
+}
 
+METRICS = [
+    "activity",
+    "participants",
+    "contributors",
+    "bus_factor",
+    "issue_response_time",
+    "openrank"
+]
+
+QWEN_API_KEY = 'sk-e507bc9960a14a82a84a361961767157'
+QWEN_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"

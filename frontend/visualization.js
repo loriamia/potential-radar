@@ -67,11 +67,12 @@ function createPotentialDashboard(container, data, months) {
  */
 function createComboChart(container, data, months) {
     try {
-        console.log('创建组合图（6个月），数据:', data.monthlyActivity, data.monthlyPotential);
+        console.log('创建组合图（6个月），数据:', data.monthlyActivity, data.currentPotential);
         
         // 确保有6个月的数据
         const activityData = data.monthlyActivity || [];
-        const potentialData = data.monthlyPotential || [];
+        const potentialData = data.currentPotential || [];
+        console.log('！！！！当前潜力值数据',data.currentPotential)
         
         // 调整数据为6个月
         const adjustedActivity = ensureSixMonthsData(activityData);
@@ -278,23 +279,27 @@ function createComboChart(container, data, months) {
  * 确保有6个月的数据
  */
 function ensureSixMonthsData(data, isPotential = false) {
-    if (!Array.isArray(data) || data.length === 0) {
-        // 生成6个月的模拟数据
-        const baseValue = isPotential ? 65 : 50;
-        const trend = isPotential ? 2 : 0.5;
+    // if (!Array.isArray(data) || data.length === 0) {
+    //     // 生成6个月的模拟数据
+    //     const baseValue = isPotential ? 65 : 50;
+    //     const trend = isPotential ? 2 : 0.5;
         
-        return Array(6).fill(0).map((_, i) => {
-            const variation = (Math.random() * 2 - 1) * (isPotential ? 1.5 : 0.3);
-            return baseValue + i * trend + variation;
-        }).map(v => parseFloat(v.toFixed(1)));
-    }
+    //     return Array(6).fill(0).map((_, i) => {
+    //         const variation = (Math.random() * 2 - 1) * (isPotential ? 1.5 : 0.3);
+    //         return baseValue + i * trend + variation;
+    //     }).map(v => parseFloat(v.toFixed(1)));
+    // }
     
     // 如果数据多于6个，取最后6个
-    if (data.length > 6) {
-        return data.slice(-6);
-    }
+    // if (data.length > 6) {
+    //     return data.slice(-6);
+    // }
     
     // 如果数据少于6个，补充数据
+    // if(isPotential = true){
+    //     console.log('！！！！当前潜力值数据',data)
+    // }
+    
     if (data.length < 6) {
         const result = [...data];
         const lastValue = result.length > 0 ? result[result.length - 1] : (isPotential ? 65 : 50);
@@ -942,11 +947,11 @@ function createRadarChart(container, data) {
  */
 function createProgressChart(container, data, months) {
     try {
-        const currentPotential = data.monthlyPotential?.[data.monthlyPotential.length - 1] || 65;
-        const potentialGrowth = data.monthlyPotential ? 
-            (data.monthlyPotential[data.monthlyPotential.length - 1] - (data.monthlyPotential[0] || currentPotential)) : 0;
+        const currentPotential = data.currentPotential?.[data.currentPotential.length - 1] || 65;
+        const potentialGrowth = data.currentPotential ? 
+            (data.currentPotential[data.currentPotential.length - 1] - (data.currentPotential[data.currentPotential.length - 2])) : 0;
         
-        const activityGrowth = data.monthlyActivity ? 
+        const activityGrowth = data.currentPotential ? 
             (data.monthlyActivity[data.monthlyActivity.length - 1] - (data.monthlyActivity[0] || 50)) : 0;
         
         const chart = echarts.init(container);
@@ -1503,7 +1508,7 @@ function displayResults(data) {
         const resultContainer = document.getElementById('resultContainer');
         
         if (repoNameEl) repoNameEl.textContent = data.repo || '未知仓库';
-        if (potentialEl) potentialEl.textContent = data.potential || 0;
+        if (potentialEl) potentialEl.textContent = data.potential[5] || 0;
         
         // 格式化显示数据
         if (averagedDataEl && data.averaged_data) {
@@ -1996,7 +2001,7 @@ function adaptBackendData(apiData) {
     const result = {
         monthlyActivity: ensureSixMonthsData(detailedData.activity || [], false),
         monthlyPotential: [],
-        currentPotential: parseFloat(apiData.potential) || 65,
+        currentPotential: apiData.potential,
         rawTrends: rawTrends,
         dimensions: [...rawTrends],
         dimensionNames: ['活动趋势', '核心贡献者风险', '贡献者增长', '问题响应趋势', 'OpenRank趋势', '参与者趋势'],
@@ -2016,371 +2021,6 @@ function adaptBackendData(apiData) {
     
     return result;
 }
-/**
- * 模拟后端 calc_trend 函数
- */
-function calcTrend(values) {
-  if (values.length < 2) return 0.0;
-  const first = values[0];
-  const last = values[values.length - 1];
-  return (last - first) / (Math.abs(first) + 1e-6);
-}
-
-/**
- * 模拟后端 calc_jump 函数
- */
-function calcJump(values) {
-  if (values.length < 2) return 0;
-  return values[values.length - 1] > values[0] ? 1 : 0;
-}
-
-/**
- * 完全按照后端逻辑计算最终潜力值
- */
-function calculatePotentialScore(apiData) {
-  const d = apiData.detailed_data;
-
-  // 提取原始数组（不需要补全，直接用原始数据）
-  const activity = d.activity || [];
-  const participants = d.participants || [];
-  const busFactor = d.bus_factor || [];
-  const issueResponseTime = d.issue_response_time || [];
-  const openrank = d.openrank || [];
-
-  // 1. 计算各趋势项（注意：issue_response_time 趋势需取反！）
-  const activity_trend = calcTrend(activity);
-  const participants_trend = calcTrend(participants);
-  const bus_factor_jump = calcJump(busFactor);
-  
-  // ⚠️ 关键：issue_response_time 越大表示响应越慢（越差），所以趋势应为负向
-  // 后端返回的 averaged_data.issue_response_time_trend 是负数（如 -0.76）
-  // 因此我们在计算时，应该传入：-calcTrend(issueResponseTime)
-  const issue_response_time_trend = -calcTrend(issueResponseTime); // 取反！
-
-  const openrank_trend = calcTrend(openrank);
-
-  // 2. 代入公式
-  const score = (
-    0.67 * activity_trend
-    - 0.23 * participants_trend
-    + 0.18 * bus_factor_jump
-    + 0.14 * issue_response_time_trend  // 这里已经是“正向”指标（越大越好）
-    + 0.20 * openrank_trend
-    + 1
-  ) * 100;
-
-  // 3. 限制合理范围（可选）
-  return Math.max(0, Math.min(200, parseFloat(score.toFixed(1))));
-}
 
 
-/**
- * 基于当前潜力值和活动数据生成月度潜力趋势
- */
-function generateMonthlyPotentialTrend(currentPotential, monthlyActivity) {
-    if (!currentPotential || currentPotential <= 0) {
-        console.warn('当前潜力值无效，使用默认数据');
-        return [60, 62, 65, 68, 70, 72];
-    }
-    
-    const monthlyPotential = [];
-    const trend = 1.5; // 每月增长趋势
-    const startPotential = currentPotential * 0.85; // 从略低于当前值开始
-    
-    console.log('生成潜力趋势: 当前值=', currentPotential, '起始值=', startPotential);
-    
-    // 如果活动数据有效，基于活动数据调整潜力值
-    if (monthlyActivity && monthlyActivity.length >= 6) {
-        // 找到最大活动值用于归一化
-        const maxActivity = Math.max(...monthlyActivity);
-        const minActivity = Math.min(...monthlyActivity);
-        const activityRange = maxActivity - minActivity || 1;
-        
-        for (let i = 0; i < 6; i++) {
-            // 基于活动数据的相对位置计算潜力
-            const activityRatio = (monthlyActivity[i] - minActivity) / activityRange;
-            const monthIndex = i; // 0-5
-            const timeFactor = monthIndex * trend;
-            
-            // 计算该月潜力：起始值 + 时间趋势 + 活动影响
-            let monthPotential = startPotential + timeFactor + (activityRatio * 8);
-            
-            // 最后一个月的值应该接近当前潜力值
-            if (i === 5) {
-                monthPotential = currentPotential;
-            }
-            
-            // 确保在合理范围内
-            monthPotential = Math.max(60, Math.min(200, monthPotential));
-            monthlyPotential.push(Math.round(monthPotential * 10) / 10);
-        }
-    } else {
-        // 如果没有活动数据，创建逐渐增长的潜力趋势
-        for (let i = 0; i < 6; i++) {
-            let monthPotential;
-            if (i < 5) {
-                // 前5个月线性增长到当前值
-                monthPotential = startPotential + (i * ((currentPotential - startPotential) / 5));
-            } else {
-                // 第6个月等于当前值
-                monthPotential = currentPotential;
-            }
-            
-            monthPotential = Math.max(60, Math.min(200, monthPotential));
-            monthlyPotential.push(Math.round(monthPotential * 10) / 10);
-        }
-    }
-    
-    console.log('生成的月度潜力趋势:', monthlyPotential);
-    return monthlyPotential;
-}
 
-/**
- * 获取6个维度的中文名称（已在上面的prepareDashboardData中使用）
- */
-function getSixDimensionNames() {
-    return [
-        '活动趋势',
-        '核心贡献者风险',
-        '贡献者增长',
-        '问题响应趋势',
-        'OpenRank趋势',
-        '参与者趋势'
-    ];
-}
-
-// ==================== 5. 初始化测试 ====================
-
-// 页面加载完成后进行一些初始化
-window.addEventListener('load', function() {
-    console.log('页面完全加载');
-    console.log('ECharts版本:', echarts.version);
-    console.log('createPotentialDashboard 可用:', typeof createPotentialDashboard === 'function');
-    
-    // 检查后端连接
-    checkBackendConnection();
-});
-
-/**
- * 检查后端连接状态
- */
-async function checkBackendConnection() {
-    try {
-        const response = await fetch('http://localhost:5000/analyze', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ repo: 'test/test' }),
-            signal: AbortSignal.timeout(3000)
-        }).catch(() => null);
-        
-        if (response && response.status !== 404) {
-            console.log('✅ 后端服务连接正常');
-        } else {
-            console.warn('⚠️ 后端服务可能未启动，将使用模拟数据');
-            showConnectionWarning();
-        }
-    } catch (error) {
-        console.warn('后端连接检查失败:', error.message);
-    }
-}
-
-// 添加这个测试函数到你的代码中
-function runDebugTest() {
-    console.log('=== 运行调试测试 ===');
-    
-    const testData = {
-        "averaged_data": {
-            "activity_trend": 0.9512866772714451,
-            "bus_factor_jump": 0,
-            "contributors_jump": 0,
-            "issue_response_time_trend": -0.7614284626530767,
-            "openrank_trend": 0.42505583332084274,
-            "participants_trend": 0.33333327777778704
-        },
-        "detailed_data": {
-            "activity": [10.88, 6.89, 11.74, 11.96, 18.13, 21.23],
-            "openrank": [4.47, 4.89, 4.86, 4.19, 5.62, 6.37]
-        },
-        "potential": 154.25,
-        "repo": "X-lab2017/open-digger"
-    };
-    
-    
-    console.log('2. 测试 adaptBackendData 函数:');
-    try {
-        const result = adaptBackendData(testData);
-        console.log('适配结果:', result);
-        console.log('维度数据:', result.dimensions);
-        console.log('维度数量:', result.dimensions.length);
-    } catch (error) {
-        console.error('适配失败:', error);
-    }
-}
-
-
-/**
- * 诊断数据适配问题
- */
-function diagnoseDataAdaptation(apiData) {
-    console.log('=== 数据适配诊断 ===');
-    
-    if (!apiData) {
-        console.error('❌ API数据为空');
-        return;
-    }
-    
-    console.log('1. API数据结构:', Object.keys(apiData));
-    
-    if (apiData.averaged_data) {
-        console.log('2. averaged_data字段:', Object.keys(apiData.averaged_data));
-        
-        // 检查6个关键维度字段
-        const neededFields = [
-            'activity_trend', 'bus_factor_jump', 'contributors_jump',
-            'issue_response_time_trend', 'openrank_trend', 'participants_trend'
-        ];
-        
-        console.log('3. 检查6个维度字段:');
-        neededFields.forEach(field => {
-            const exists = apiData.averaged_data[field] !== undefined;
-            console.log(`   ${field}: ${exists ? '✅' : '❌'}`);
-        });
-        
-
-    } else {
-        console.warn('⚠️ 缺少 averaged_data 字段');
-    }
-    
-    if (apiData.detailed_data) {
-        console.log('5. detailed_data字段:', Object.keys(apiData.detailed_data));
-        
-        // 检查活动数据
-        let foundActivity = false;
-        const activityFields = ['activity', 'openrank', 'contributors', 'participants'];
-        activityFields.forEach(field => {
-            if (apiData.detailed_data[field] && Array.isArray(apiData.detailed_data[field])) {
-                console.log(`   ✅ 找到活动数据字段: ${field}, 长度: ${apiData.detailed_data[field].length}`);
-                foundActivity = true;
-            }
-        });
-        
-        if (!foundActivity) {
-            console.warn('   ⚠️ 未找到活动数据数组');
-        }
-    }
-    
-    console.log('=== 诊断结束 ===');
-}
-
-/**
- * 测试数据转换
- */
-function testDataConversion() {
-    const testData = {
-        "averaged_data": {
-            "activity_trend": 0.9512866772714451,
-            "bus_factor_jump": 0,
-            "contributors_jump": 0,
-            "issue_response_time_trend": -0.7614284626530767,
-            "openrank_trend": 0.42505583332084274,
-            "participants_trend": 0.33333327777778704
-        },
-        "detailed_data": {
-            "activity": [10.88, 6.89, 11.74, 11.96, 18.13, 21.23],
-            "openrank": [4.47, 4.89, 4.86, 4.19, 5.62, 6.37]
-        },
-        "potential": 154.25,
-        "repo": "X-lab2017/open-digger"
-    };
-    
-    console.log('=== 测试数据转换 ===');
-    try {
-        const result = adaptBackendData(testData);
-        console.log('转换结果:', result);
-        console.log('维度数量:', result.dimensions.length);
-        console.log('维度数据:', result.dimensions);
-    } catch (error) {
-        console.error('转换失败:', error);
-    }
-}
-
-/**
- * 测试后端数据结构
- */
-async function testBackendDataStructure() {
-    try {
-        console.log('测试后端数据结构...');
-        
-        // 这里可以测试一个已知的仓库
-        const testRepo = 'torvalds/linux'; // 或者你已知的仓库
-        
-        const data = await analyzeRepository(testRepo);
-        console.log('测试仓库返回的数据结构:');
-        console.log(JSON.stringify(data, null, 2));
-        
-        // 显示关键信息
-        if (data.averaged_data) {
-            console.log('averaged_data 包含的字段:');
-            console.log(Object.keys(data.averaged_data).join(', '));
-            
-            // 检查我们需要的6个维度字段
-            const neededFields = ['activity_trend', 'bus_factor_jump', 'contributors_jump', 
-                                  'issue_response_time_trend', 'openrank_trend', 'participants_trend'];
-            
-            console.log('检查6个维度字段是否存在:');
-            neededFields.forEach(field => {
-                const exists = data.averaged_data[field] !== undefined;
-                console.log(`${field}: ${exists ? '✅' : '❌'}`);
-            });
-        }
-        
-    } catch (error) {
-        console.error('测试失败:', error);
-    }
-}
-
-// 页面加载后自动测试
-window.addEventListener('load', function() {
-    // 可以取消注释下面这行来自动测试
-    // testBackendDataStructure();
-});
-
-/**
- * 显示连接警告
- */
-function showConnectionWarning() {
-    const warningDiv = document.createElement('div');
-    warningDiv.style.cssText = `
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        padding: 10px 15px;
-        background: #fff3cd;
-        border: 1px solid #ffecb5;
-        border-radius: 4px;
-        color: #856404;
-        font-size: 12px;
-        z-index: 1000;
-        max-width: 300px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    `;
-    warningDiv.innerHTML = `
-        <strong>⚠️ 后端未连接</strong>
-        <p style="margin:5px 0 0 0;">正在使用模拟数据，如需真实分析请启动后端服务。</p>
-    `;
-    document.body.appendChild(warningDiv);
-    
-    // 5秒后自动消失
-    setTimeout(() => {
-        warningDiv.style.opacity = '0';
-        warningDiv.style.transition = 'opacity 0.5s';
-        setTimeout(() => warningDiv.remove(), 500);
-    }, 5000);
-}
-
-// 导出全局函数
-window.createPotentialDashboard = createPotentialDashboard;
-window.toggleRawData = toggleRawData;
-window.copyDataToClipboard = copyDataToClipboard;
-
-console.log('avisualization.js 加载完成');

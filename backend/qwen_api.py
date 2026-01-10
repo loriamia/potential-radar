@@ -1,6 +1,5 @@
-import os
 from openai import OpenAI
-
+from config import QWEN_API_KEY, QWEN_BASE_URL
 def call_qwen_model(prompt: str, system_prompt: str = "You are a helpful assistant.") -> str:
     """
     调用千问大模型API，返回模型回复内容
@@ -11,9 +10,8 @@ def call_qwen_model(prompt: str, system_prompt: str = "You are a helpful assista
     try:
         # 初始化OpenAI客户端（适配千问兼容模式）
         client = OpenAI(
-            # api_key=os.getenv("DASHSCOPE_API_KEY"),  # 从环境变量读取API Key
-            api_key='sk-e507bc9960a14a82a84a361961767157',
-            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+            api_key = QWEN_API_KEY,
+            base_url = QWEN_BASE_URL,
         )
 
         # 调用聊天接口
