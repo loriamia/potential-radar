@@ -77,13 +77,13 @@ def calculate_trending_data_by_slice(detailed_data, slice_len):
     :return: 该切片对应的趋势数据
     """
     trending_data = {
-        "activity_trend": calc_trend(detailed_data["activity"][:slice_len]),
-        "participants_trend": calc_trend(detailed_data["participants"][:slice_len]),
-        "contributors_jump": calc_jump(detailed_data["contributors"][:slice_len]),
-        "bus_factor_jump": calc_jump(detailed_data["bus_factor"][:slice_len]),
-        "issue_response_time_trend": -calc_trend(detailed_data["issue_response_time"][:slice_len]),
-        "openrank_trend": calc_trend(detailed_data["openrank"][:slice_len])
-    }
+    "activity_trend": round(calc_trend(detailed_data["activity"][:slice_len]), 2),
+    "participants_trend": round(calc_trend(detailed_data["participants"][:slice_len]), 2),
+    "contributors_jump": round(calc_jump(detailed_data["contributors"][:slice_len]), 2),
+    "bus_factor_jump": round(calc_jump(detailed_data["bus_factor"][:slice_len]), 2),
+    "issue_response_time_trend": round(-calc_trend(detailed_data["issue_response_time"][:slice_len]), 2),
+    "openrank_trend": round(calc_trend(detailed_data["openrank"][:slice_len]), 2)
+}
     return trending_data
 
 # 新增：计算单轮潜力值
