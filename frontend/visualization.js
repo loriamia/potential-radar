@@ -321,7 +321,7 @@ function ensureSixMonthsData(data, isPotential = false) {
  * 生成6个月的标签
  */
 function generateSixMonthsLabels() {
-    const months = ['一月', '二月', '三月', '四月', '五月', '六月'];
+    const months = ['七月', '八月', '九月', '十月', '十一月', '十二月'];
     return months;
 }
 
@@ -950,10 +950,6 @@ function createProgressChart(container, data, months) {
         const currentPotential = data.currentPotential?.[data.currentPotential.length - 1] || 65;
         const potentialGrowth = data.currentPotential ? 
             (data.currentPotential[data.currentPotential.length - 1] - (data.currentPotential[data.currentPotential.length - 2])) : 0;
-        
-        const activityGrowth = data.currentPotential ? 
-            (data.monthlyActivity[data.monthlyActivity.length - 1] - (data.monthlyActivity[0] || 50)) : 0;
-        
         const chart = echarts.init(container);
         
         const option = {
@@ -964,55 +960,6 @@ function createProgressChart(container, data, months) {
             },
             tooltip: { 
                 trigger: 'item',
-                formatter: function(params) {
-                    if (params.componentType === 'gauge') {
-                        const value = params.value || 0;
-                        let rating = '待提升';
-                        let ratingColor = '#FC757B';
-                        let suggestions = [];
-                        
-                        if (value >= 90) {
-                            rating = '卓越';
-                            ratingColor = '#65BDBA';
-                            suggestions = ['保持当前节奏', '关注社区健康度'];
-                        } else if (value >= 75) {
-                            rating = '优秀';
-                            ratingColor = '#8BC34A';
-                            suggestions = ['优化响应时间', '扩大贡献者基础'];
-                        } else if (value >= 60) {
-                            rating = '良好';
-                            ratingColor = '#FFC107';
-                            suggestions = ['提高代码活跃度', '加强社区互动'];
-                        } else if (value >= 40) {
-                            rating = '一般';
-                            ratingColor = '#FF9800';
-                            suggestions = ['增加开发活动', '改善问题响应'];
-                        }
-                        
-                        return `
-                            <div style="font-weight:bold;margin-bottom:5px;">仓库潜力评估</div>
-                            <div style="display:flex;align-items:center;margin:3px 0;">
-                                <span style="color:#666;margin-right:10px;">当前评分:</span>
-                                <span style="color:${ratingColor};font-weight:bold;font-size:16px;">${value}分</span>
-                            </div>
-                            <div style="display:flex;align-items:center;margin:3px 0;">
-                                <span style="color:#666;margin-right:10px;">等级:</span>
-                                <span style="color:${ratingColor};font-weight:bold;">${rating}</span>
-                            </div>
-                            <div style="margin-top:8px;color:#666;font-size:12px;">
-                                <div>${potentialGrowth >= 0 ? '📈' : '📉'} 潜力变化: <span style="color:${potentialGrowth >= 0 ? '#65BDBA' : '#FC757B'}">${potentialGrowth >= 0 ? '+' : ''}${potentialGrowth.toFixed(1)}分</span></div>
-                                <div>${activityGrowth >= 0 ? '📈' : '📉'} 活动变化: <span style="color:${activityGrowth >= 0 ? '#65BDBA' : '#FC757B'}">${activityGrowth >= 0 ? '+' : ''}${activityGrowth.toFixed(1)}</span></div>
-                            </div>
-                            ${suggestions.length > 0 ? `
-                                <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #ddd;">
-                                    <div style="color:#666;font-size:11px;margin-bottom:3px;">建议:</div>
-                                    ${suggestions.map(s => `<div style="color:#666;font-size:11px;margin:2px 0;">• ${s}</div>`).join('')}
-                                </div>
-                            ` : ''}
-                        `;
-                    }
-                    return params.name + ': ' + params.value;
-                }
             },
             grid: { left: '10%', right: '10%', top: '20%', bottom: '10%' },
             xAxis: { show: false },
@@ -1102,9 +1049,9 @@ function createProgressChart(container, data, months) {
                     endAngle: 0,
                     data: [
                         {
-                            value: activityGrowth > 0 ? 40 : 15,
+                            value: 80,
                             itemStyle: { 
-                                color: activityGrowth > 0 ? 
+                                color: potentialGrowth > 0 ? 
                                     new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                                         { offset: 0, color: 'rgba(76, 175, 80, 0.4)' },
                                         { offset: 1, color: 'rgba(76, 175, 80, 0.1)' }
@@ -1117,7 +1064,7 @@ function createProgressChart(container, data, months) {
                             label: { show: false }
                         },
                         {
-                            value: 100 - (activityGrowth > 0 ? 40 : 15),
+                            value: 100 - (potentialGrowth > 0 ? 40 : 15),
                             itemStyle: { color: 'transparent' }
                         }
                     ]
@@ -1129,8 +1076,8 @@ function createProgressChart(container, data, months) {
                     left: 'center',
                     top: '85%',
                     style: {
-                        text: `活动趋势: ${activityGrowth >= 0 ? '增长' : '下降'}`,
-                        fill: activityGrowth >= 0 ? '#65BDBA' : '#FC757B',
+                        text: `潜力值趋势: ${potentialGrowth >= 0 ? '增长' : '下降'}`,
+                        fill: '#65BDBA',
                         fontSize: 13,
                         fontWeight: 'bold',
                         shadowColor: 'rgba(0,0,0,0.1)',
