@@ -795,6 +795,59 @@ function createRadarChart(container, data) {
                 left: 'center',
                 textStyle: { fontSize: 14 }
             },
+tooltip: {
+    trigger: 'item',
+    triggerOn: 'mousemove',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderColor: '#e6e6e6',
+    borderWidth: 1,
+    padding: [12, 15],
+    textStyle: { fontSize: 11, color: '#333' },
+    formatter: function () {
+        // 辅助函数：处理 NaN 并返回有效值
+        const getValidValue = (value) => {
+            // 判断是否为 NaN，是则返回 0，否则返回原值
+            return isNaN(Number(value)) ? 0 : Number(value);
+        };
+
+        let tooltipContent = '<div style="font-weight: bold; margin-bottom: 8px; text-align: center;">六维度仓库趋势分析</div>';
+        indicators.forEach((indicator, index) => {
+            // 先处理原始值，替换 NaN 为 0
+            let rawValue = getValidValue(rawTrends[index]);
+            // 处理格式化标签值，替换 NaN 为 0%
+            let formatted = formattedLabels[index];
+            if (isNaN(Number(formatted.replace('%', '')))) {
+                formatted = '0.0%';
+            }
+
+            // 转为两位小数的百分数（基于处理后的值）
+            const rawPercent = (rawValue * 100).toFixed(2) + '%';
+            const formattedPercent = !formatted.includes('%') 
+                ? (getValidValue(parseFloat(formatted)) * 100).toFixed(2) + '%' 
+                : formatted;
+            
+            tooltipContent += `
+                <div style="margin: 4px 0; display: flex; justify-content: space-between; align-items: center;">
+                    <span>${indicator.name}：</span>
+                    <span style="font-weight: 500;">${formattedPercent}</span>
+                </div>
+            `;
+        });
+        return tooltipContent;
+    },
+    position: ['50%', '50%'],
+    showDelay: 0,
+    hideDelay: 300,
+    enterable: true,
+    showBorder: true,
+    textStyle: {
+        fontSize: 11,
+        color: '#333',
+        whiteSpace: 'nowrap'
+    },
+    confine: true
+},
+           
             radar: {
                 indicator: indicators,
                 shape: 'circle',
@@ -1634,8 +1687,12 @@ function showDataDebugInfo(apiData, isMock = false) {
             if (apiData.averaged_data) {
                 debugHTML += '<p><strong>关键指标:</strong></p><ul style="margin-top:5px;padding-left:20px;">';
                 const keyMetrics = [
-                    'activity', 'openrank', 'contributors', 'participants', 
-                    'bus_factor', 'issue_response_time', 'change_request_response_time'
+                     "activity_trend",
+    "participants_trend",
+    "contributors_jump",
+    "bus_factor_jump",
+    "issue_response_time_trend",
+    "openrank_trend"
                 ];
                 
                 keyMetrics.forEach(metric => {
